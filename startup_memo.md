@@ -1,6 +1,7 @@
 2025/04/12
 
 [参考リンク](https://qiita.com/shoki-y/items/1be906c372c8a9a993a3)
+[ChatGPT](https://chatgpt.com/share/67fa8485-f038-8009-886e-bd046dc4d614)
 
 # project init config
 
@@ -38,7 +39,7 @@ services:
       - /app/node_modules
 ```
 
-## 5 vite.config.js port difine
+## 5 vite.config.js port define
 
 ```js
 // https://vitejs.dev/config/
