@@ -72,9 +72,9 @@ function App() {
       
       <div id="menu">   {/** 下部設定エリア */}
         <p>col count</p>
-        <input type="number" value={cols} onChange={(e)=>setCols(Number(e.target.value))}></input>
+        <input type="number" value={cols} onChange={(e)=>{table_mapped=false;setCols(Number(e.target.value))}}></input>
         <p>row count</p>
-        <input type="number" value={rows} onChange={(e)=>setRows(Number(e.target.value))}></input>
+        <input type="number" value={rows} onChange={(e)=>{table_mapped=false;setRows(Number(e.target.value))}}></input>
       </div>
     </>
   )
