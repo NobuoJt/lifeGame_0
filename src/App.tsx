@@ -7,8 +7,8 @@ let table_mapped=false;
 /** メイン。再描画時に呼ばれる */ 
 function App() {
 
-  const [cols,setCols]=useState(5)  //列col数の管理
-  const [rows,setRows]=useState(5)  //行row数の管理
+  const [cols,setCols]=useState(20)  //列col数の管理
+  const [rows,setRows]=useState(35)  //行row数の管理
 
   const [tableData,setTableData]=useState([[false]])  //盤面データの管理
 
@@ -44,7 +44,14 @@ function App() {
                   row.push(//セルボタン設定
                     <td>
                       <button id="mainSwitch" 
-                              style={{backgroundColor:tableData[c][r]?'blue':'red'}}>
+                              style={{backgroundColor:tableData[c][r]?'blue':'red'}}
+                              onClick={()=>{setTableData(
+                                tableData.map((col,c_ind)=>(
+                                  c_ind==c?col.map(
+                                    (row,r_ind)=>r_ind==r?!row:row
+                                  ):col
+                                )))}}
+                              >
 
                       </button>
                     </td>
