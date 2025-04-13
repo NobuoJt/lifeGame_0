@@ -9,17 +9,23 @@ html, body {
   height: 100%;
   width: 100%;
 }
-#playArea{
-  height: 90%;
+
+div{
+  height:100%
 }
 
-#playArea>table {
+#playArea{
+  height: 90%;
+  
+  table {
   width: 100%;
   height: 100%;
   border-collapse: collapse;
-}
-#playArea>table>tr>td {
-  border: 3px solid #808080;
+  }
+  
+  tr > td {
+    border: 3px solid #808080;
+  }
 }
 
 button#mainSwitch{
@@ -27,27 +33,23 @@ button#mainSwitch{
   height:100%;
   background-color: blue;
   border-radius: 0px;
-}
 
-button#mainSwitch:hover{
+  :hover{
   width: 100%;
   height:100%;
   box-shadow: 10px 5px 5px black;
   border-radius: 0px;
-}
-
-div{
-  height:100%
+  }
 }
 
 #menu{
-  height:10%
-}
+  height:10%;
 
-#menu>p{
-  display: contents;
-}
+  p{
+    display: contents;
+  }
 
-#menu>input{
-  width: 3rem;
+  input{
+    width: 3rem;
+  }
 }
