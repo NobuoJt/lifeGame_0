@@ -29,7 +29,7 @@ function App() {
 
   return (  //DOM挿入
     <>
-      <div id="playArea"> //盤面
+      <div id="playArea"> {/**盤面*/}
         <table>
         {function(){
 
@@ -63,7 +63,7 @@ function App() {
         
       </div>
       
-      <div id="menu">   /** 下部設定エリア */
+      <div id="menu">   {/** 下部設定エリア */}
         <p>col count</p>
         <input type="number" value={cols} onChange={(e)=>setCols(Number(e.target.value))}></input>
         <p>row count</p>
