@@ -1,8 +1,14 @@
 import { useState } from 'react'
+import packageJson from "../package.json"
 import './App.css'
+
+
 
 /**再描画フラグ。ないと無限ループ。*/
 let table_mapped=false; 
+
+document.title+=` (${packageJson.version})`
+console.log(`version=(${packageJson.version})`)
 
 /** メイン。再描画時に呼ばれる */ 
 function App() {
@@ -84,3 +90,10 @@ function App() {
 }
 
 export default App
+
+
+/** プログラム領域 */
+
+function next_phase(){
+  return
+}
