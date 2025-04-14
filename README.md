@@ -9,8 +9,8 @@ viteもdockerもGitHub Actionsも初めてなのでお試し。
 
 dockerを使います。
 ```sh
-docker pull yourdockerhubusername/lifegame_0:latest
-docker run -p 3000:3000 yourdockerhubusername/lifegame_0
+docker pull nobuojt/lifegame_0:latest
+docker run -p 3000:3000 nobuojt/lifegame_0
 ```
 
 ブラウザで```localhost:3000```にアクセス
@@ -41,6 +41,7 @@ docker run -p 3000:3000 yourdockerhubusername/lifegame_0
 - live このステップでの生存数
 - barth このステップでの誕生数
 - death このステップでの死亡数
+
 # Docker Repository
 
 https://hub.docker.com/r/nobuojt/lifegame_0
