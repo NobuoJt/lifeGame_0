@@ -61,9 +61,14 @@ button#mainSwitch{
     place-items: center;
     align-items: center;
     align-content: center;
-    margin: 10% 20%;
+    margin: 10%;
+    padding-left: 15%;
+    padding-right: 0%;
+    grid-auto-flow: row;
+    inline-size:95%;
+    width:100%;
   }
-
+  
   div{
     display: grid;
     grid-auto-flow: column;
@@ -104,6 +109,12 @@ button#mainSwitch{
     place-items: center;
   }
 
+  input#hasAuto{
+    width:20px;
+    height: 20px;
+    margin: 0px 10px 0px 10px;
+  }
+
   button{
     display: grid;
     grid-auto-flow: column;
@@ -118,6 +129,10 @@ button#mainSwitch{
     background: lightgreen;
     color: black;
     
+  }
+
+  #auto_step{
+    display: grid;
   }
 
 }

@@ -89,6 +89,13 @@ function App() {
           <p> step: {phase_counter}</p>
         </div>
 
+        <div id="auto_step">
+          <p> step time(ms) </p>
+          <input type="number" value={interval_time} onChange={(e)=>{setIntervalTime(Number(e.target.value))}}></input>
+          <p> auto step run</p>
+          <input type="checkbox" id="hasAuto" onChange={()=>{handleInterval()}}></input>
+        </div>
+
         <div id="reset">
           <button id="reset" onClick={()=>{setTableRandom(0)}}>death fill</button>
           <div id='random'>
@@ -96,10 +103,6 @@ function App() {
             <p>% random</p>
             <button id="random" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
           </div>
-        </div>
-        <div id="auto_step">
-          <input type="number" value={interval_time} onChange={(e)=>{setIntervalTime(Number(e.target.value))}}></input>
-          <input type="checkbox" id="hasAuto" onChange={()=>{handleInterval()}}></input>
         </div>
       </div>
     </>
@@ -141,52 +144,65 @@ function setTableRandom(randomize=0){
 }
 
 function nextPhase(){
-                      console.log(phase_counter)
+  let new_table_data:boolean[][]
   let ch_flag=false//変更あり?
-  
-  const new_table_data=tableData.map((row_data,ri)=>{ //列走査
-    return row_data.map((_col_data,ci)=>{              //行走査
-      if(tableData[ri][ci]){//当該セル生状態
-      /** 隣接セルがいきているか否か */
-      let live_count_near=0
-      if(getTableDataWithOffset(tableData,ri,ci,-1,-1)){live_count_near++}  //左上
-      if(getTableDataWithOffset(tableData,ri,ci,-1, 0)){live_count_near++}  //上
-      if(getTableDataWithOffset(tableData,ri,ci,-1, 1)){live_count_near++}  //右上
-      if(getTableDataWithOffset(tableData,ri,ci,0, -1)){live_count_near++}  //左
-      if(getTableDataWithOffset(tableData,ri,ci,0,  1)){live_count_near++}  //右
-      if(getTableDataWithOffset(tableData,ri,ci,1, -1)){live_count_near++}  //右下
-      if(getTableDataWithOffset(tableData,ri,ci,1,  0)){live_count_near++}  //下
-      if(getTableDataWithOffset(tableData,ri,ci,1,  1)){live_count_near++}  //左下
 
+  let prev_table_data:boolean[][]=[[]]
+  setTableData(p=>{ //prevStateを使うためにアロー関数
+    prev_table_data=p
+    
 
-      if(live_count_near<=1){ch_flag=true;return false}  //過疎死
-      if(live_count_near>=4){ch_flag=true;return false}  //過密死
-      return true //生存
-
-    }else{//当該セル死状態
-      /** 隣接セルがいきているか否か */
-      let live_count_near=0
-      if(getTableDataWithOffset(tableData,ri,ci,-1,-1)){live_count_near++}  //左上
-      if(getTableDataWithOffset(tableData,ri,ci,-1, 0)){live_count_near++}  //上
-      if(getTableDataWithOffset(tableData,ri,ci,-1, 1)){live_count_near++}  //右上
-      if(getTableDataWithOffset(tableData,ri,ci,0, -1)){live_count_near++}  //左
-      if(getTableDataWithOffset(tableData,ri,ci,0,  1)){live_count_near++}  //右
-      if(getTableDataWithOffset(tableData,ri,ci,1, -1)){live_count_near++}  //右下
-      if(getTableDataWithOffset(tableData,ri,ci,1,  0)){live_count_near++}  //下
-      if(getTableDataWithOffset(tableData,ri,ci,1,  1)){live_count_near++}  //左下
-      if(live_count_near==3){ch_flag=true;return true} //誕生
-      return false    //死亡状態継続
+    if(ch_flag==true){
+      return new_table_data
     }
-      
+  
+    new_table_data=prev_table_data.map((row_data,ri)=>{ //列走査
+      return row_data.map((_col_data,ci)=>{              //行走査
+        if(tableData[ri][ci]){//当該セル生状態
+        /** 隣接セルがいきているか否か */
+        let live_count_near=0
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1,-1)){live_count_near++}  //左上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 0)){live_count_near++}  //上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 1)){live_count_near++}  //右上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0, -1)){live_count_near++}  //左
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0,  1)){live_count_near++}  //右
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1, -1)){live_count_near++}  //右下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  0)){live_count_near++}  //下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1)){live_count_near++}  //左下
+
+
+        if(live_count_near<=1){ch_flag=true;return false}  //過疎死
+        if(live_count_near>=4){ch_flag=true;return false}  //過密死
+        return true //生存
+
+      }else{//当該セル死状態
+        /** 隣接セルがいきているか否か */
+        let live_count_near=0
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1,-1)){live_count_near++}  //左上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 0)){live_count_near++}  //上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 1)){live_count_near++}  //右上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0, -1)){live_count_near++}  //左
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0,  1)){live_count_near++}  //右
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1, -1)){live_count_near++}  //右下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  0)){live_count_near++}  //下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1)){live_count_near++}  //左下
+        if(live_count_near==3){ch_flag=true;return true} //誕生
+        return false    //死亡状態継続
+      }
+        
+      })
     })
+
+
+
+    if(ch_flag){
+      phase_counter++;
+      return(new_table_data)
+    }else{
+      return(prev_table_data)
+    }
   })
 
-  if(ch_flag){
-    phase_counter++
-    setTableData(new_table_data)
-
-  }
-  return null
 }
 
 /** tableのセル取得関数(指定indexループ) */
