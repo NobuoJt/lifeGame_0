@@ -1,7 +1,7 @@
 {
     "name": "lifegame_0",
     "private": true,
-    "version": "0.0.0-d",
+    "version": "1.0.0-e",
     "type": "module",
     "scripts": {
         "dev": "vite",
