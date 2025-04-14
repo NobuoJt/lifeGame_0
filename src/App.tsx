@@ -10,6 +10,9 @@ let table_mapped=false;
 /** リセットからの世代カウント */
 let phase_counter=0
 
+/** auto stepのタイマー情報 */
+let interval_ids:NodeJS.Timeout[]=[]
+
 if(!document.title.match(packageJson.version)){
   document.title+=` (${packageJson.version})`
   console.log(`version=(${packageJson.version})`)
@@ -20,7 +23,9 @@ function App() {
   const [row_length,setRowLength]=useState(20)  //行row数の管理
   const [col_length,setColLength]=useState(20)  //列col数の管理
 
-  const [randomize,setRandomize]=useState(50)  //列col数の管理
+  const [randomize,setRandomize]=useState(50)  //ランダム生成%
+  const [interval_time,setIntervalTime]=useState(500)  //自動ステップインターバル時間
+  
 
   const [tableData,setTableData]=useState([[false]])  //盤面データの管理
 
@@ -92,11 +97,32 @@ function App() {
             <button id="random" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
           </div>
         </div>
+        <div id="auto_step">
+          <input type="number" value={interval_time} onChange={(e)=>{setIntervalTime(Number(e.target.value))}}></input>
+          <input type="checkbox" id="hasAuto" onChange={()=>{handleInterval()}}></input>
+        </div>
       </div>
     </>
   )
 
 /** プログラム領域 */
+
+function handleInterval(){
+  const has_auto_elem=document.getElementById("hasAuto") as HTMLInputElement
+  if(has_auto_elem.checked){
+    interval_ids.push(
+        setInterval(() => {
+        nextPhase()
+      }, interval_time)
+    )
+  }else{
+    interval_ids.forEach((id)=>{
+      
+      clearInterval(id)
+    })
+    interval_ids=[]
+  }
+}
 
 function setTableRandom(randomize=0){
   phase_counter=0
@@ -115,12 +141,12 @@ function setTableRandom(randomize=0){
 }
 
 function nextPhase(){
+                      console.log(phase_counter)
   let ch_flag=false//変更あり?
   
   const new_table_data=tableData.map((row_data,ri)=>{ //列走査
     return row_data.map((_col_data,ci)=>{              //行走査
       if(tableData[ri][ci]){//当該セル生状態
-
       /** 隣接セルがいきているか否か */
       let live_count_near=0
       if(getTableDataWithOffset(tableData,ri,ci,-1,-1)){live_count_near++}  //左上
@@ -158,6 +184,7 @@ function nextPhase(){
   if(ch_flag){
     phase_counter++
     setTableData(new_table_data)
+
   }
   return null
 }
