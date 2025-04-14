@@ -12,8 +12,12 @@ html, body {
   color: snow;
 }
 
+*{
+  box-sizing:border-box;
+}
+
 div{
-  height:100%
+  height:100%;
 }
 
 #playArea{
@@ -46,33 +50,74 @@ button#mainSwitch{
 
 #menu{
   height:10%;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-content:center;
 
   p{
-    display: inline;
-    margin: 10px;
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+    align-items: center;
+    align-content: center;
+    margin: 10% 20%;
   }
 
   div{
-    display: inline;
-    margin: 5px;
-    padding: 2px;
-    border: 1px solid darkgreen;
-    background-color: darkgreen;
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+    margin: 0.5% 1%;
+    padding: auto;
+    border: 1px solid blue;
+    background-color: darkred;
+    height: 75%;
+    width: auto;
+  }
+
+  #table_cnt{
+    background: darkgoldenrod;
+  }
+
+  #random{
+    height: auto;
+    width: auto;
+    padding: 1%;
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    background: darkgreen;
+
+    button{
+      background: #000000;
+      color: aqua;
+      padding: 2%;
+    }
   }
 
   input{
     width: 3rem;
+    margin: 1% 0%;
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
   }
 
   button{
-    margin: 10px;
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+    align-items: center;
+    margin: 1% 0%;
   }
   button#next{
     background: lightcoral;
   }
   button#reset{
-    background: midnightblue;
-    color: aliceblue;
+    background: lightgreen;
+    color: black;
+    
   }
 
 }

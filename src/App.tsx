@@ -7,6 +7,9 @@ import './App.css'
 /**再描画フラグ。ないと無限ループ。*/
 let table_mapped=false; 
 
+/** リセットからの世代カウント */
+let phase_counter=0
+
 if(!document.title.match(packageJson.version)){
   document.title+=` (${packageJson.version})`
   console.log(`version=(${packageJson.version})`)
@@ -75,12 +78,20 @@ function App() {
           <p>col count</p>
           <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
         </div>
-        <button id="next" onClick={()=>{nextPhase()}}>next step</button>
 
-        <button id="reset" onClick={()=>{setTableRandom(0)}}>death fill</button>
-        <input type="number" value={randomize} onChange={(e)=>{setRandomize(Number(e.target.value))}}></input>
-        <p>% random</p>
-        <button id="reset" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
+        <div id="phase">
+          <button id="next" onClick={()=>{nextPhase()}}>next step</button>
+          <p> step: {phase_counter}</p>
+        </div>
+
+        <div id="reset">
+          <button id="reset" onClick={()=>{setTableRandom(0)}}>death fill</button>
+          <div id='random'>
+            <input type="number" value={randomize} onChange={(e)=>{setRandomize(Number(e.target.value))}}></input>
+            <p>% random</p>
+            <button id="random" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
+          </div>
+        </div>
       </div>
     </>
   )
@@ -88,6 +99,7 @@ function App() {
 /** プログラム領域 */
 
 function setTableRandom(randomize=0){
+  phase_counter=0
   const row_data:boolean[][]=[]  //行データ
   let   col_data:boolean[]=[]    //列データ
 
@@ -103,6 +115,7 @@ function setTableRandom(randomize=0){
 }
 
 function nextPhase(){
+  phase_counter++
   const new_table_data=tableData.map((row_data,ri)=>{ //列走査
     return row_data.map((_col_data,ci)=>{              //行走査
       if(tableData[ri][ci]){//当該セル生状態
