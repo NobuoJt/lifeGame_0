@@ -48,10 +48,31 @@ button#mainSwitch{
   height:10%;
 
   p{
-    display: contents;
+    display: inline;
+    margin: 10px;
+  }
+
+  div{
+    display: inline;
+    margin: 5px;
+    padding: 2px;
+    border: 1px solid darkgreen;
+    background-color: darkgreen;
   }
 
   input{
     width: 3rem;
   }
+
+  button{
+    margin: 10px;
+  }
+  button#next{
+    background: lightcoral;
+  }
+  button#reset{
+    background: midnightblue;
+    color: aliceblue;
+  }
+
 }

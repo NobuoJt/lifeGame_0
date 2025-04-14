@@ -16,23 +16,13 @@ function App() {
   const [row_length,setRowLength]=useState(20)  //行row数の管理
   const [col_length,setColLength]=useState(20)  //列col数の管理
 
+  const [randomize,setRandomize]=useState(50)  //列col数の管理
+
   const [tableData,setTableData]=useState([[false]])  //盤面データの管理
 
   if(table_mapped===false){   //盤面ランダム化
-
-    const row_data:boolean[][]=[]  //行データ
-    let   col_data:boolean[]=[]    //列データ
-
-    for(let c=0;c<row_length;c++){
-      col_data=[]
-      for(let r=0;r<col_length;r++){    
-        col_data.push(Math.random()>0.6) //乱数により生成
-      }
-      row_data.push(col_data)
-    }
-    table_mapped=true
-    setTableData(row_data)   //盤面更新
-}
+    setTableRandom(0)
+  }
 
   return (  //DOM挿入
     <>
@@ -78,17 +68,38 @@ function App() {
       </div>
       
       <div id="menu">   {/** 下部設定エリア */}
-        <p>row count</p>
-        <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
-        <p>col count</p>
-        <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
-        <p>phase change</p>
-        <button onClick={()=>{nextPhase()}}>next phase</button>
+        <div id="table_cnt">
+          <p>row count</p>
+          <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
+          <p>col count</p>
+          <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
+        </div>
+        <button id="next" onClick={()=>{nextPhase()}}>next step</button>
+
+        <button id="reset" onClick={()=>{setTableRandom(0)}}>death fill</button>
+        <input type="number" value={randomize} onChange={(e)=>{setRandomize(Number(e.target.value))}}></input>
+        <p>% random</p>
+        <button id="reset" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
       </div>
     </>
   )
 
 /** プログラム領域 */
+
+function setTableRandom(randomize=0){
+  const row_data:boolean[][]=[]  //行データ
+  let   col_data:boolean[]=[]    //列データ
+
+  for(let c=0;c<row_length;c++){
+    col_data=[]
+    for(let r=0;r<col_length;r++){    
+      col_data.push(Math.random()<randomize) //乱数により生成
+    }
+    row_data.push(col_data)
+  }
+  table_mapped=true
+  setTableData(row_data)   //盤面更新
+}
 
 function nextPhase(){
   const new_table_data=tableData.map((row_data,ri)=>{ //列走査
@@ -152,6 +163,7 @@ function getTableDataWithOffset(
 
   return table[row][col];
 }
+
 
 
 }
