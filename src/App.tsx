@@ -115,7 +115,8 @@ function setTableRandom(randomize=0){
 }
 
 function nextPhase(){
-  phase_counter++
+  let ch_flag=false//変更あり?
+  
   const new_table_data=tableData.map((row_data,ri)=>{ //列走査
     return row_data.map((_col_data,ci)=>{              //行走査
       if(tableData[ri][ci]){//当該セル生状態
@@ -132,8 +133,8 @@ function nextPhase(){
       if(getTableDataWithOffset(tableData,ri,ci,1,  1)){live_count_near++}  //左下
 
 
-      if(live_count_near<=1){return false}  //過疎死
-      if(live_count_near>=4){return false}  //過密死
+      if(live_count_near<=1){ch_flag=true;return false}  //過疎死
+      if(live_count_near>=4){ch_flag=true;return false}  //過密死
       return true //生存
 
     }else{//当該セル死状態
@@ -147,13 +148,17 @@ function nextPhase(){
       if(getTableDataWithOffset(tableData,ri,ci,1, -1)){live_count_near++}  //右下
       if(getTableDataWithOffset(tableData,ri,ci,1,  0)){live_count_near++}  //下
       if(getTableDataWithOffset(tableData,ri,ci,1,  1)){live_count_near++}  //左下
-      if(live_count_near==3){return true} //誕生
+      if(live_count_near==3){ch_flag=true;return true} //誕生
       return false    //死亡状態継続
     }
       
     })
   })
-  setTableData(new_table_data)
+
+  if(ch_flag){
+    phase_counter++
+    setTableData(new_table_data)
+  }
   return null
 }
 
