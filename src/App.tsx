@@ -28,6 +28,9 @@ function App() {
   
 
   const [tableData,setTableData]=useState([[false]])  //盤面データの管理
+  const [live_count,setLiveCount]=useState(0)  //盤面生存数の管理
+  const [barth_count,setBarthCount]=useState(0)  //盤面誕生数の管理
+  const [death_count,setDeathCount]=useState(0)  //盤面死亡数の管理
 
   if(table_mapped===false){   //盤面ランダム化
     setTableRandom(0)
@@ -104,6 +107,12 @@ function App() {
             <button id="random" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
           </div>
         </div>
+
+        <div id="stat">
+          <p id="lives">live:{live_count}</p>
+          <p id="barthes">barth:{barth_count}</p>
+          <p id="deaths">death:{death_count}</p>
+        </div>
       </div>
     </>
   )
@@ -146,6 +155,9 @@ function setTableRandom(randomize=0){
 function nextPhase(){
   let new_table_data:boolean[][]
   let ch_flag=false//変更あり?
+  let live_count_local=0
+  let barth_count_local=0
+  let death_count_local=0
 
   let prev_table_data:boolean[][]=[[]]
   setTableData(p=>{ //prevStateを使うためにアロー関数
@@ -171,8 +183,9 @@ function nextPhase(){
         if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1)){live_count_near++}  //左下
 
 
-        if(live_count_near<=1){ch_flag=true;return false}  //過疎死
-        if(live_count_near>=4){ch_flag=true;return false}  //過密死
+        if(live_count_near<=1){ch_flag=true;death_count_local++;return false}  //過疎死
+        if(live_count_near>=4){ch_flag=true;death_count_local++;return false}  //過密死
+        live_count_local++
         return true //生存
 
       }else{//当該セル死状態
@@ -186,14 +199,16 @@ function nextPhase(){
         if(getTableDataWithOffset(prev_table_data,ri,ci,1, -1)){live_count_near++}  //右下
         if(getTableDataWithOffset(prev_table_data,ri,ci,1,  0)){live_count_near++}  //下
         if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1)){live_count_near++}  //左下
-        if(live_count_near==3){ch_flag=true;return true} //誕生
+        if(live_count_near==3){ch_flag=true;live_count_local++;barth_count_local++;return true} //誕生
         return false    //死亡状態継続
       }
         
       })
     })
 
-
+    setLiveCount(()=>live_count_local)
+    setBarthCount(()=>barth_count_local)
+    setDeathCount(()=>death_count_local)
 
     if(ch_flag){
       phase_counter++;

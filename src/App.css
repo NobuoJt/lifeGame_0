@@ -75,7 +75,6 @@ button#mainSwitch{
     place-items: center;
     margin: 0.5% 1%;
     padding: auto;
-    border: 1px solid blue;
     background-color: darkred;
     height: 75%;
     width: auto;
@@ -95,10 +94,13 @@ button#mainSwitch{
     background: darkgreen;
 
     button{
-      background: #000000;
-      color: aqua;
+      background: lightgreen;
       padding: 2%;
     }
+  }
+
+  #reset{
+    background: green;
   }
 
   input{
@@ -126,13 +128,23 @@ button#mainSwitch{
     background: lightcoral;
   }
   button#reset{
-    background: lightgreen;
-    color: black;
+    background: black;
+    color: aqua;
     
   }
 
   #auto_step{
     display: grid;
+  }
+
+  #stat{
+    background: darkblue;
+    width: 130%;
+    p{
+      overflow:break-word;
+      word-break: break-all;
+    }
+
   }
 
 }
