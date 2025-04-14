@@ -7,9 +7,10 @@ import './App.css'
 /**再描画フラグ。ないと無限ループ。*/
 let table_mapped=false; 
 
-document.title+=` (${packageJson.version})`
-console.log(`version=(${packageJson.version})`)
-
+if(!document.title.match(packageJson.version)){
+  document.title+=` (${packageJson.version})`
+  console.log(`version=(${packageJson.version})`)
+}
 /** メイン。再描画時に呼ばれる */ 
 function App() {
 
