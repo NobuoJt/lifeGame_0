@@ -40,38 +40,38 @@ function App() {
         <table>
         {function(){
 
-          const col=[]  //列データ
-          let row=[]    //行データ
+          const col_data=[]  //列データ
+          let row_data=[]    //行データ
 
             for(let c=0;c<col_length;c++){//列ごと
-              row=[]
+              row_data=[]
 
-              for(let r=0;r<row_length;r++){ //行ごと
-                if(tableData[c]!==undefined){//null参照回避
-                  row.push(//セルボタン設定
+              for(let r=0;r<row_length;r++){  //行ごと
+                if(tableData[c]!==undefined){ //null参照回避
+                  row_data.push(              //セルボタン設定
                     <td>
                       <button id="mainSwitch" 
-                              style={{backgroundColor:tableData[c][r]?'blue':'red'}}
+                              style={{backgroundColor:tableData[c][r]?'blue':'red'}}//tableDataに応じて青赤変化
                               onClick={()=>{setTableData(
-                                tableData.map((col,c_ind)=>(
-                                  c_ind==c?col.map(
-                                    (row,r_ind)=>r_ind==r?!row:row
-                                  ):col
+                                tableData.map((col,c_ind)=>(  //行で走査
+                                  c_ind==c?col.map(           //当該行・列で走査
+                                    (row,r_ind)=>r_ind==r     //当該列
+                                      ?!row:row               //反転・else非反転
+                                  ):col                       //else非反転
                                 )))}}
                               >
-
                       </button>
                     </td>
                   )
                 }
               }
-              col.push(//列データへ行データ押し込み
+              col_data.push(  //列データへ行データ押し込み
                 <tr>
-                  {row}
+                  {row_data}
                 </tr>
               )
             }
-            return col
+            return col_data   //行列データ
         }()}
         </table>
         
@@ -83,7 +83,7 @@ function App() {
         <p>row count</p>
         <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
         <p>phase change</p>
-        <button onClick={()=>{next_phase()}}>next phase</button>
+        <button onClick={()=>{nextPhase()}}>next phase</button>
       </div>
     </>
   )
@@ -94,6 +94,6 @@ export default App
 
 /** プログラム領域 */
 
-function next_phase(){
+function nextPhase(){
   return
 }
