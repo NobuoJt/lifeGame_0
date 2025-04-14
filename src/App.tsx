@@ -37,7 +37,7 @@ function App() {
   return (  //DOM挿入
     <>
       <div id="playArea"> {/**盤面*/}
-        <table>
+        <table><tbody>
         {function(){
 
           const col_data=[]  //列データ
@@ -49,7 +49,7 @@ function App() {
               for(let r=0;r<row_length;r++){  //行ごと
                 if(tableData[c]!==undefined){ //null参照回避
                   row_data.push(              //セルボタン設定
-                    <td>
+                    <td key={"r"+r}>
                       <button id="mainSwitch" 
                               style={{backgroundColor:tableData[c][r]?'blue':'red'}}//tableDataに応じて青赤変化
                               onClick={()=>{setTableData(
@@ -66,14 +66,14 @@ function App() {
                 }
               }
               col_data.push(  //列データへ行データ押し込み
-                <tr>
+                <tr key={"c"+c}>
                   {row_data}
                 </tr>
               )
             }
             return col_data   //行列データ
         }()}
-        </table>
+        </tbody></table>
         
       </div>
       
