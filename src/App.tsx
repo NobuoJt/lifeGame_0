@@ -170,7 +170,7 @@ function nextPhase(){
   
     new_table_data=prev_table_data.map((row_data,ri)=>{ //列走査
       return row_data.map((_col_data,ci)=>{              //行走査
-        if(tableData[ri][ci]){//当該セル生状態
+        if(prev_table_data[ri][ci]){//当該セル生状態
         /** 隣接セルがいきているか否か */
         let live_count_near=0
         if(getTableDataWithOffset(prev_table_data,ri,ci,-1,-1)){live_count_near++}  //左上
