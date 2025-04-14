@@ -76,3 +76,10 @@ $ docker compose exec app bash
 #コンテナを終了
 $ docker compose down
 ```
+
+#記述規則
+
+- ClassName
+- var_name
+- funcName
+- getValue
