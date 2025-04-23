@@ -4,8 +4,8 @@
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
+  
+  
   height: 100%;
   width: 100%;
   background-color: black;
@@ -21,7 +21,9 @@ div{
 }
 
 #playArea{
-  height: 90%;
+  overflow: auto;
+  height: calc(100% - 120px);
+  width:100%;
   
   table {
   width: 100%;
@@ -31,29 +33,38 @@ div{
   
   tr > td {
     border: 0px solid #000000;
+
+    button#mainSwitch{
+      width: 100%;
+      height:100%;
+      min-height:30px;
+      min-width:30px;
+      background-color: blue;
+      border-radius: 0px;
+    
+      :hover{
+        width:100%;
+        height:100%;
+      }
+    }
+
   }
 }
 
-button#mainSwitch{
-  width: 100%;
-  height:100%;
-  background-color: blue;
-  border-radius: 0px;
 
-  :hover{
-  width: 100%;
-  height:100%;
-  box-shadow: 10px 5px 5px black;
-  border-radius: 0px;
-  }
-}
 
 #menu{
+  overflow: auto;
+  position: sticky;
+  top: 0px;
   height:10%;
+  max-width: 1500px;
+  min-height: 120px;
   display: grid;
   grid-auto-flow: column;
   align-items: center;
-  justify-content:center;
+  margin: auto;
+
 
   p{
     display: grid;
@@ -61,9 +72,8 @@ button#mainSwitch{
     place-items: center;
     align-items: center;
     align-content: center;
-    margin: 10%;
-    padding-left: 15%;
-    padding-right: 0%;
+    text-align: center;
+    margin:3px;
     grid-auto-flow: row;
     inline-size:95%;
     width:100%;
@@ -73,21 +83,35 @@ button#mainSwitch{
     display: grid;
     grid-auto-flow: column;
     place-items: center;
-    margin: 0.5% 1%;
-    padding: auto;
+    margin: 10px;
     background-color: darkred;
     height: 75%;
     width: auto;
   }
 
-  #table_cnt{
+  button,input{
+    margin:5px;
+  }
+
+  #table_cnt_out{
     background: darkgoldenrod;
+    text-align: center;
+    height: 100%-20px;
+  }
+
+  #table_cnt_in{
+    background: rgb(216, 158, 11);
+    color: white;
+    height: 100%-20px;
+    input{
+      margin-right: 5px;
+    }
   }
 
   #random{
     height: auto;
     width: auto;
-    padding: 1%;
+    
     display: grid;
     grid-auto-flow: column;
     align-items: center;
@@ -95,7 +119,7 @@ button#mainSwitch{
 
     button{
       background: lightgreen;
-      padding: 2%;
+      
     }
   }
 
@@ -105,7 +129,15 @@ button#mainSwitch{
 
   input{
     width: 3rem;
-    margin: 1% 0%;
+    
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+  }
+
+  input#step_time{
+    width: 4rem;
+    
     display: grid;
     grid-auto-flow: column;
     place-items: center;
@@ -114,7 +146,7 @@ button#mainSwitch{
   input#hasAuto{
     width:20px;
     height: 20px;
-    margin: 0px 10px 0px 10px;
+    
   }
 
   button{
@@ -122,7 +154,7 @@ button#mainSwitch{
     grid-auto-flow: column;
     place-items: center;
     align-items: center;
-    margin: 1% 0%;
+    
   }
   button#next{
     background: lightcoral;
@@ -139,12 +171,17 @@ button#mainSwitch{
 
   #stat{
     background: darkblue;
-    width: 130%;
+    width: 90%;
     p{
       overflow:break-word;
-      word-break: break-all;
+      word-break: keep-all;
     }
 
+  }
+
+  input#show_as_button{
+    width:20px;
+    height: 20px;
   }
 
 }
