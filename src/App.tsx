@@ -36,12 +36,20 @@ function App() {
 
   const [hasLoop,setLoop]=useState(true)  //画面端を逆側にループさせるか
 
+  const [stringed_json,setStringedJson]=useState("")  
+
   let mainContent=<></>
 
   if(table_mapped===false){   //盤面ランダム化
     setTableRandom(0)
   }
-
+  if(type2ShowPlayArea=="ExportImport"){
+    mainContent=<div id="stat">
+      <button id="export" onClick={exportJson}>Export JSON</button>
+      <button id="import" onClick={importJson}>Import JSON</button>
+      <textarea id="export" onChange={(e)=>{setStringedJson(e.target.value)}} value={stringed_json}></textarea>
+      </div>
+  }
 
   if(type2ShowPlayArea=="button"||type2ShowPlayArea=="none"||type2ShowPlayArea=="tile"){/*メインコンテンツ=盤面*/
     mainContent=        
@@ -151,7 +159,7 @@ function App() {
             <option value="button">Button</option>
             <option value="none">None</option>
             <option value="tile">Tile</option>
-            <option value="stat">Stat</option>
+            <option value="ExportImport">Ex/Import</option>
             <option value="option">Option</option>
             <option value="graph">Graph</option>
           </select>
@@ -335,6 +343,35 @@ function extend(){
   }
   table_mapped=true
   setTableData(row_data)   //盤面更新
+
+}
+
+function exportJson(){
+  setStringedJson(JSON.stringify(
+    {
+      row_length:row_length,
+      col_length:col_length,
+      phase_counter:phase_counter,
+      hasLoop:hasLoop,
+      interval_time:interval_time,
+      interval_ids:interval_ids,
+      randomize:randomize,
+      tableData:tableData
+    }
+  ))
+  return 
+}
+
+function importJson(){
+  const j=JSON.parse(stringed_json)
+  setRowLength(j?.row_length)
+  setColLength(j?.col_length)
+  phase_counter=j?.phase_counter
+  setLoop(j?.hasLoop)
+  setIntervalTime(j?.interval_time)
+  interval_ids=j?.interval_ids
+  setRandomize(j?.randomize)
+  setTableData(j?.tableData)
 
 }
 
