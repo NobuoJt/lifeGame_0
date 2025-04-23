@@ -36,59 +36,70 @@ function App() {
 
   const [hasLoop,setLoop]=useState(true)  //画面端を逆側にループさせるか
 
+  let mainContent=<></>
+
   if(table_mapped===false){   //盤面ランダム化
     setTableRandom(0)
   }
 
+
+  if(type2ShowPlayArea=="button"||type2ShowPlayArea=="none"||type2ShowPlayArea=="tile"){/*メインコンテンツ=盤面*/
+    mainContent=        
+    <table><tbody>
+    {function(){
+
+      const row_data=[]  //行データ
+      let col_data=[]    //列データ
+
+        for(let r=0;r<row_length;r++){//行ごと
+          col_data=[]
+
+          for(let c=0;c<col_length;c++){  //列ごと
+            if(tableData[r]!==undefined){ //null参照回避
+              col_data.push(              //セルボタン設定
+                <td key={"r"+c}>
+                  {function(){
+                    if(type2ShowPlayArea=="button"){
+                    return <button id="mainSwitch" 
+                          style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}//tableDataに応じて青赤変化
+                          onClick={()=>{setTableData(
+                            tableData.map((row,c_ind)=>(  //列で走査
+                              c_ind==r?row.map(           //当該列・行で走査
+                                (col,r_ind)=>r_ind==c     //当該行
+                                  ?!col:col               //反転・else非反転
+                              ):row                       //else非反転
+                            )))}}
+                          >
+                        </button>
+                    }
+                    if(type2ShowPlayArea=="tile"){
+                      return <div style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}></div>
+                    }
+                    if(type2ShowPlayArea=="none"){return <div></div>}
+                    return <div></div>
+                  }()}
+                </td>
+              )
+            }
+          }
+          row_data.push(  //行データへ列データ押し込み
+            <tr key={"c"+r}>
+              {col_data}
+            </tr>
+          )
+        }
+        return row_data   //列行データ
+    }()}
+    </tbody></table>
+  }
+
+
+
+
   return (  //DOM挿入
     <>
       <div id="playArea"> {/**盤面*/}
-        <table><tbody>
-        {function(){
-
-          const row_data=[]  //行データ
-          let col_data=[]    //列データ
-
-            for(let r=0;r<row_length;r++){//行ごと
-              col_data=[]
-
-              for(let c=0;c<col_length;c++){  //列ごと
-                if(tableData[r]!==undefined){ //null参照回避
-                  col_data.push(              //セルボタン設定
-                    <td key={"r"+c}>
-                      {function(){
-                        if(type2ShowPlayArea=="button"){
-                        return <button id="mainSwitch" 
-                              style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}//tableDataに応じて青赤変化
-                              onClick={()=>{setTableData(
-                                tableData.map((row,c_ind)=>(  //列で走査
-                                  c_ind==r?row.map(           //当該列・行で走査
-                                    (col,r_ind)=>r_ind==c     //当該行
-                                      ?!col:col               //反転・else非反転
-                                  ):row                       //else非反転
-                                )))}}
-                              >
-                            </button>
-                        }
-                        if(type2ShowPlayArea=="tile"){
-                          return <div style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}></div>
-                        }
-                        if(type2ShowPlayArea=="none"){return <div></div>}
-                        return <div></div>
-                      }()}
-                    </td>
-                  )
-                }
-              }
-              row_data.push(  //行データへ列データ押し込み
-                <tr key={"c"+r}>
-                  {col_data}
-                </tr>
-              )
-            }
-            return row_data   //列行データ
-        }()}
-        </tbody></table>
+        {mainContent/*メインコンテンツ*/}
         
       </div>
       
