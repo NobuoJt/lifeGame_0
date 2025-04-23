@@ -34,6 +34,8 @@ function App() {
 
   const [type2ShowPlayArea,setType2ShowPlayArea]=useState("button")  //メイン画面表示方法
 
+  const [hasLoop,setLoop]=useState(true)  //画面端を逆側にループさせるか
+
   if(table_mapped===false){   //盤面ランダム化
     setTableRandom(0)
   }
@@ -99,11 +101,16 @@ function App() {
             <p>Col</p>
             <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
           </div>
+          <button onClick={extend}>Extend</button>
         </div>
 
         <div id="phase">
           <button id="next" onClick={()=>{nextPhase()}}>Next<br></br>step</button>
           <p> Step: {phase_counter}</p>
+          <div>
+            <p>Opposite loop</p>
+            <input type="checkbox" id="hasLoop" checked={hasLoop} onChange={()=>{setLoop(!hasLoop)}}></input>
+          </div>
         </div>
 
         <div id="auto_step">
@@ -143,6 +150,8 @@ function App() {
   )
 
 /** プログラム領域 */
+
+
 
 function handleInterval(){
   const has_auto_elem=document.getElementById("hasAuto") as HTMLInputElement
@@ -190,11 +199,24 @@ function nextPhase(){
   let live_count_local=0
   let barth_count_local=0
   let death_count_local=0
+  const loop=hasLoop
 
   let prev_table_data:boolean[][]=[[]]
   setTableData(p=>{ //prevStateを使うためにアロー関数
     prev_table_data=p
     
+    if(!loop){//拡張判断
+      const needExtend=prev_table_data.some((_er,_ir)=>{
+        return _er.some((_ec,_ic)=>{
+          if(_ir==0 || _ir==prev_table_data.length-1 || _ic ==0 || _ic==_er.length-1){
+            return _ec
+          }
+        })
+      })
+      if(needExtend){
+        extend()
+      }
+    }
 
     if(ch_flag==true){
       return new_table_data
@@ -205,14 +227,14 @@ function nextPhase(){
         if(prev_table_data[ri][ci]){//当該セル生状態
         /** 隣接セルがいきているか否か */
         let live_count_near=0
-        if(getTableDataWithOffset(prev_table_data,ri,ci,-1,-1)){live_count_near++}  //左上
-        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 0)){live_count_near++}  //上
-        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 1)){live_count_near++}  //右上
-        if(getTableDataWithOffset(prev_table_data,ri,ci,0, -1)){live_count_near++}  //左
-        if(getTableDataWithOffset(prev_table_data,ri,ci,0,  1)){live_count_near++}  //右
-        if(getTableDataWithOffset(prev_table_data,ri,ci,1, -1)){live_count_near++}  //右下
-        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  0)){live_count_near++}  //下
-        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1)){live_count_near++}  //左下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1,-1,loop)){live_count_near++}  //左上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 0,loop)){live_count_near++}  //上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 1,loop)){live_count_near++}  //右上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0, -1,loop)){live_count_near++}  //左
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0,  1,loop)){live_count_near++}  //右
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1, -1,loop)){live_count_near++}  //右下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  0,loop)){live_count_near++}  //下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1,loop)){live_count_near++}  //左下
 
 
         if(live_count_near<=1){ch_flag=true;death_count_local++;return false}  //過疎死
@@ -223,14 +245,14 @@ function nextPhase(){
       }else{//当該セル死状態
         /** 隣接セルがいきているか否か */
         let live_count_near=0
-        if(getTableDataWithOffset(prev_table_data,ri,ci,-1,-1)){live_count_near++}  //左上
-        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 0)){live_count_near++}  //上
-        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 1)){live_count_near++}  //右上
-        if(getTableDataWithOffset(prev_table_data,ri,ci,0, -1)){live_count_near++}  //左
-        if(getTableDataWithOffset(prev_table_data,ri,ci,0,  1)){live_count_near++}  //右
-        if(getTableDataWithOffset(prev_table_data,ri,ci,1, -1)){live_count_near++}  //右下
-        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  0)){live_count_near++}  //下
-        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1)){live_count_near++}  //左下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1,-1,loop)){live_count_near++}  //左上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 0,loop)){live_count_near++}  //上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,-1, 1,loop)){live_count_near++}  //右上
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0, -1,loop)){live_count_near++}  //左
+        if(getTableDataWithOffset(prev_table_data,ri,ci,0,  1,loop)){live_count_near++}  //右
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1, -1,loop)){live_count_near++}  //右下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  0,loop)){live_count_near++}  //下
+        if(getTableDataWithOffset(prev_table_data,ri,ci,1,  1,loop)){live_count_near++}  //左下
         if(live_count_near==3){ch_flag=true;live_count_local++;barth_count_local++;return true} //誕生
         return false    //死亡状態継続
       }
@@ -258,7 +280,8 @@ function getTableDataWithOffset(
   rowIndex: number,
   colIndex: number,
   rowOffset: number,
-  colOffset: number
+  colOffset: number,
+  loop=true
 ): boolean {
   const rowLength = table.length;
   const colLength = table[0].length;
@@ -267,10 +290,41 @@ function getTableDataWithOffset(
   const wrap = (i: number, length: number): number =>
     ((i % length) + length) % length;
 
-  const row = wrap(rowIndex + rowOffset, rowLength);
-  const col = wrap(colIndex + colOffset, colLength);
+  let row = wrap(rowIndex + rowOffset, rowLength);
+  let col = wrap(colIndex + colOffset, colLength);
 
-  return table[row][col];
+  if(!loop){
+    row = rowIndex + rowOffset
+    col = colIndex + colOffset
+    if (row<0 ||col<0||row>=rowLength||col>=colLength){
+      return false
+    }
+  }
+  let output=false;
+  try{output = table[row][col]}catch(err){if(err){console.error(err)}}
+  return output;
+}
+
+function extend(){
+
+  const row_data:boolean[][]=[]  //行データ
+  let   col_data:boolean[]=[]    //列データ
+  setColLength(col_length+2)
+  setRowLength(row_length+2)
+  for(let c=0;c<row_length+2;c++){
+    col_data=[]
+    for(let r=0;r<col_length+2;r++){    
+      if(c>0&&r> 0&& c<tableData.length+1&&r<tableData[c-1].length+1){
+        col_data.push(tableData[c-1][r-1])
+      }else{
+        col_data.push(false)
+      }
+    }
+    row_data.push(col_data)
+  }
+  table_mapped=true
+  setTableData(row_data)   //盤面更新
+
 }
 
 
