@@ -32,6 +32,8 @@ function App() {
   const [barth_count,setBarthCount]=useState(0)  //盤面誕生数の管理
   const [death_count,setDeathCount]=useState(0)  //盤面死亡数の管理
 
+  const [type2ShowPlayArea,setType2ShowPlayArea]=useState("button")  //メイン画面表示方法
+
   if(table_mapped===false){   //盤面ランダム化
     setTableRandom(0)
   }
@@ -52,7 +54,9 @@ function App() {
                 if(tableData[r]!==undefined){ //null参照回避
                   col_data.push(              //セルボタン設定
                     <td key={"r"+c}>
-                      <button id="mainSwitch" 
+                      {function(){
+                        if(type2ShowPlayArea=="button"){
+                        return <button id="mainSwitch" 
                               style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}//tableDataに応じて青赤変化
                               onClick={()=>{setTableData(
                                 tableData.map((row,c_ind)=>(  //列で走査
@@ -62,7 +66,14 @@ function App() {
                                   ):row                       //else非反転
                                 )))}}
                               >
-                      </button>
+                            </button>
+                        }
+                        if(type2ShowPlayArea=="tile"){
+                          return <div style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}></div>
+                        }
+                        if(type2ShowPlayArea=="none"){return <div></div>}
+                        return <div></div>
+                      }()}
                     </td>
                   )
                 }
@@ -80,38 +91,52 @@ function App() {
       </div>
       
       <div id="menu">   {/** 下部設定エリア */}
-        <div id="table_cnt">
-          <p>row count</p>
-          <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
-          <p>col count</p>
-          <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
+        <div id="table_cnt_out">
+          <p> Count<br></br>Set </p>
+          <div id="table_cnt_in">
+            <p>Row</p>
+            <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
+            <p>Col</p>
+            <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
+          </div>
         </div>
 
         <div id="phase">
-          <button id="next" onClick={()=>{nextPhase()}}>next step</button>
-          <p> step: {phase_counter}</p>
+          <button id="next" onClick={()=>{nextPhase()}}>Next<br></br>step</button>
+          <p> Step: {phase_counter}</p>
         </div>
 
         <div id="auto_step">
-          <p> step time(ms) </p>
-          <input type="number" value={interval_time} onChange={(e)=>{setIntervalTime(Number(e.target.value))}}></input>
-          <p> auto step run</p>
+          <p> Step time(ms) </p>
+          <input type="number" id="step_time" value={interval_time} onChange={(e)=>{setIntervalTime(Number(e.target.value))}}></input>
+          <p> AutoStep<br></br>run</p>
           <input type="checkbox" id="hasAuto" onChange={()=>{handleInterval()}}></input>
         </div>
 
         <div id="reset">
-          <button id="reset" onClick={()=>{setTableRandom(0)}}>death fill</button>
+          <button id="reset" onClick={()=>{setTableRandom(0)}}>Kill ALL</button>
           <div id='random'>
             <input type="number" value={randomize} onChange={(e)=>{setRandomize(Number(e.target.value))}}></input>
-            <p>% random</p>
-            <button id="random" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
+            <p>% </p>
+            <button id="Random" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
           </div>
         </div>
 
         <div id="stat">
-          <p id="lives">live:{live_count}</p>
-          <p id="barthes">barth:{barth_count}</p>
-          <p id="deaths">death:{death_count}</p>
+          <p id="lives">Live:<br></br>{live_count}</p>
+          <p id="barthes">Barth:<br></br>{barth_count}</p>
+          <p id="deaths">Death:<br></br>{death_count}</p>
+        </div>
+        <div id="button_show">
+          <p>ShowAs</p>
+          <select id="show_as" onChange={()=>{handleShowAsButton()}}>
+            <option value="button">Button</option>
+            <option value="none">None</option>
+            <option value="tile">Tile</option>
+            <option value="stat">Stat</option>
+            <option value="option">Option</option>
+            <option value="graph">Graph</option>
+          </select>
         </div>
       </div>
     </>
@@ -127,6 +152,8 @@ function handleInterval(){
         nextPhase()
       }, interval_time)
     )
+    /*nextPhase()
+    setTimeout(handleInterval,interval_time)*/
   }else{
     interval_ids.forEach((id)=>{
       
@@ -134,6 +161,11 @@ function handleInterval(){
     })
     interval_ids=[]
   }
+}
+
+function handleShowAsButton(){
+  const elem=document.getElementById("show_as") as HTMLInputElement
+  setType2ShowPlayArea(elem.value)
 }
 
 function setTableRandom(randomize=0){
