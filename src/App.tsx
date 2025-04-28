@@ -10,6 +10,9 @@ let table_mapped=false;
 /** リセットからの世代カウント */
 let phase_counter=0
 
+/** stepごとの蓄積データ */
+let stat_log:{phase_counter:number,row_length:number,col_length:number,live_count:number,barth_count:number,death_count:number}[]=[]
+
 /** auto stepのタイマー情報 */
 let interval_ids:NodeJS.Timeout[]=[]
 
@@ -47,6 +50,10 @@ function App() {
     mainContent=<div id="stat">
       <button id="export" onClick={exportJson}>Export JSON</button>
       <button id="import" onClick={importJson}>Import JSON</button>
+      <button id="export_table_csv" onClick={exportTableCsv}>Export Table CSV</button>
+      <button id="export_table_csv" onClick={exportStatLog}>Export Stat Log JSON</button>
+      <button id="export_table_csv" onClick={exportStatLogCSV}>Export Stat Log CSV</button>
+     
       <textarea id="export" onChange={(e)=>{setStringedJson(e.target.value)}} value={stringed_json}></textarea>
       </div>
   }
@@ -198,6 +205,7 @@ function handleShowAsButton(){
 
 function setTableRandom(randomize=0){
   phase_counter=0
+  stat_log=[]
   const row_data:boolean[][]=[]  //行データ
   let   col_data:boolean[]=[]    //列データ
 
@@ -285,6 +293,7 @@ function nextPhase(){
 
     if(ch_flag){
       phase_counter++;
+      stat_log.push({phase_counter:phase_counter,row_length:row_length,col_length:col_length,live_count:live_count_local,barth_count:barth_count_local,death_count:death_count_local})
       return(new_table_data)
     }else{
       return(prev_table_data)
@@ -362,6 +371,7 @@ function exportJson(){
   return 
 }
 
+
 function importJson(){
   const j=JSON.parse(stringed_json)
   setRowLength(j?.row_length)
@@ -375,7 +385,23 @@ function importJson(){
 
 }
 
+function exportTableCsv(){
+  const csv:string=tableData.join("\n")
+  setStringedJson(csv)
+  return 
+}
 
+function exportStatLog(){
+  const csv:string=stat_log.map((e)=>(JSON.stringify(e))).join("\n")
+  setStringedJson(csv)
+  return 
+}
+
+function exportStatLogCSV(){
+  const csv:string=stat_log.map((e)=>[e?.phase_counter,e?.row_length,e?.col_length,e?.live_count,e?.barth_count,e?.death_count]).join("\n")
+  setStringedJson(csv)
+  return 
+}
 
 }
 
