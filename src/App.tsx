@@ -373,6 +373,15 @@ function exportJson(){
 
 
 function importJson(){
+  try {
+    JSON.parse(stringed_json);
+  } catch (err: unknown) {
+    if (err instanceof Error && err.name !== "SyntaxError") {
+      console.error(err);
+    }
+    return;
+  }
+
   const j=JSON.parse(stringed_json)
   setRowLength(j?.row_length)
   setColLength(j?.col_length)
