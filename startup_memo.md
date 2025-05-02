@@ -77,9 +77,18 @@ $ docker compose exec app bash
 $ docker compose down
 ```
 
-#記述規則
+# 記述規則
 
 - ClassName
 - var_name
 - funcName
 - getValue
+
+# やりたいこと
+
+## カラー設定ページ
+## グラフ機能
+## ライセンス関連
+## スマホ対応
+## コンパイル
+## 自動ステップ自動拡張動作しない？
