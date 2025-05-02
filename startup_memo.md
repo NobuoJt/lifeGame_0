@@ -39,7 +39,10 @@ services:
       - /app/node_modules
 ```
 
-## 5 vite.config.js port define
+## 5 vite.config.js define
+- Dev: server Port
+- Build: Relative link default
+    ( / [=root] → ./ [=__dirname] )
 
 ```js
 // https://vitejs.dev/config/
@@ -49,6 +52,7 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 3000,
   },
+  base:'./',
 });
 ```
 
@@ -76,6 +80,11 @@ $ docker compose exec app bash
 #コンテナを終了
 $ docker compose down
 ```
+
+# Build to Html
+
+```npm run build``` = tsc -b && vite build
+>> dist/* へ
 
 # 記述規則
 
