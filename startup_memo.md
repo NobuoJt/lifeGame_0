@@ -39,7 +39,10 @@ services:
       - /app/node_modules
 ```
 
-## 5 vite.config.js port define
+## 5 vite.config.js define
+- Dev: server Port
+- Build: Relative link default
+    ( / [=root] → ./ [=__dirname] )
 
 ```js
 // https://vitejs.dev/config/
@@ -49,10 +52,28 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 3000,
   },
+  base:'./',
 });
 ```
 
 ## 6 git環境構築
+
+## 7 license-checker
+
+```npx license-checker```
+```npx license-checker --summary```
+```npx license-checker --json```
+```npx license-checker --csv```
+
+## 8 /vscode/settings.json
+
+```"cSpell.ignorePaths":["**/node_modules/**","licenses/**"],```
+
+## 9 licenses/generate-licenses.js
+
+実行。
+そしてメインプログラムの見えるところにライセンス表示と作者表示、使用ライセンス一覧を表示。
+GitHubのライセンス本文とlicenses/へのリンクを貼る。
 
 # 詰まったところ
 
@@ -77,9 +98,22 @@ $ docker compose exec app bash
 $ docker compose down
 ```
 
-#記述規則
+# Build to Html
+
+```npm run build``` = tsc -b && vite build
+>> dist/* へ
+
+# 記述規則
 
 - ClassName
 - var_name
 - funcName
 - getValue
+
+# やりたいこと
+
+## グラフ機能
+## ライセンス関連
+## スマホ対応
+## コンパイル
+## 自動ステップ自動拡張動作しない？

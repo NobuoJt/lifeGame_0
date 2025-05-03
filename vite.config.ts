@@ -12,4 +12,5 @@ export default defineConfig({
       interval: 3000
     },
   },
+  base:'./',
 });
