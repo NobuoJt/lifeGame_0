@@ -1,0 +1,7 @@
+{
+    "cSpell.words": [
+        "njsproj",
+        "ntvs"
+    ],
+    "cSpell.ignorePaths":["**/node_modules/**","licenses/**"],
+}
