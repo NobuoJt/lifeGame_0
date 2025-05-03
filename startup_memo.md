@@ -12,13 +12,40 @@
 ## 2 install depend
 ```npm install```
 
-## 3 server trial 
+## 3 vite.config.js define
+- vite.config.js
+- Dev: server Port
+- Build: Relative link default
+    ( / [=root] → ./ [=__dirname] )
+- reload 3000ms
+
+```js
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    host: "0.0.0.0",
+    port: 3000,
+  },
+  watch: {
+      usePolling: true,
+      interval: 3000
+  },
+  base:'./',
+});
+```
+
+## 4 server trial 
 ```npm run dev```
 
-## 4 docker define
+## 5 スペルチェッカーでの固有名詞ignore
+- /vscode/settings.json  
+ADD 
+```"cSpell.ignorePaths":["**/node_modules/**","licenses/**"],```
+
+## 6 docker define
 
 - dockerfile
-- compose.yaml
 
 ```dockerfile
 FROM node:22-slim
@@ -28,6 +55,7 @@ RUN npm install
 CMD ["npm", "run", "dev"]
 ```
 
+- compose.yaml
 ```yaml
 services:
   app:
@@ -39,40 +67,18 @@ services:
       - /app/node_modules
 ```
 
-## 5 vite.config.js define
-- Dev: server Port
-- Build: Relative link default
-    ( / [=root] → ./ [=__dirname] )
+## 7 license-checker で確認
+GPLはライセンス汚染するので注意
 
-```js
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: "0.0.0.0",
-    port: 3000,
-  },
-  base:'./',
-});
-```
-
-## 6 git環境構築
-
-## 7 license-checker
-
-```npx license-checker```
 ```npx license-checker --summary```
-```npx license-checker --json```
-```npx license-checker --csv```
 
-## 8 /vscode/settings.json
+## 8 依存ライセンスをまとめ、掲載する
 
-```"cSpell.ignorePaths":["**/node_modules/**","licenses/**"],```
+- licenses/generate-licenses.js   
 
-## 9 licenses/generate-licenses.js
-
-実行。
-そしてメインプログラムの見えるところにライセンス表示と作者表示、使用ライセンス一覧を表示。
+[ソース](https://github.com/NobuoJt/lifeGame_0/blob/main/licenses/__generate-licenses.cjs)  
+実行。  
+そしてメインプログラムの見えるところにライセンス表示と作者表示を表示。  
 GitHubのライセンス本文とlicenses/へのリンクを貼る。
 
 # 詰まったところ
@@ -97,11 +103,12 @@ $ docker compose exec app bash
 #コンテナを終了
 $ docker compose down
 ```
+- 別にGUIから動かしても同じ。
 
 # Build to Html
+- dist/* へ  
 
 ```npm run build``` = tsc -b && vite build
->> dist/* へ
 
 # 記述規則
 
