@@ -217,6 +217,11 @@ div#export_import_area{
     color: black;
   }
 
+  button#export_at_reset{
+    background: lightgray;
+    color: black;
+  }
+
   button#export_table_csv,button#import_table_csv{
     background: lightsalmon;
     color: black;

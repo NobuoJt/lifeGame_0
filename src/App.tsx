@@ -10,11 +10,15 @@ let table_mapped=false;
 /** リセットからの世代カウント */
 let phase_counter=0
 
+
 /** stepごとの蓄積データ */
 let stat_log:{phase_counter:number,row_length:number,col_length:number,live_count:number,barth_count:number,death_count:number}[]=[]
 
 /** auto stepのタイマー情報 */
 let interval_ids:NodeJS.Timeout[]=[]
+
+/** リセット時のデータ */
+let dataAtReset:string=""
 
 if(!document.title.match(packageJson.version)){
   document.title+=` (${packageJson.version})`
@@ -41,6 +45,7 @@ function App() {
 
   const [stringed_json,setStringedJson]=useState("")  
 
+
   let mainContent=<></>
 
   if(table_mapped===false){   //盤面ランダム化
@@ -50,6 +55,7 @@ function App() {
     mainContent=<div id="export_import_area">
       <button id="export" title="JSON形式で現状のデータを出力" onClick={exportJson}>Export JSON</button>
       <button id="import" title="JSON形式で入力したデータを適用" onClick={importJson}>Import JSON</button>
+      <button id="export_at_reset" title="JSON形式で初期化時ののデータを出力" onClick={exportJsonAtReset}>Export JSON at Reset</button>
       <button id="export_table_csv" title="CSV形式で盤面を出力" onClick={exportTableCsv}>Export Table CSV</button>
       <button id="import_table_csv" title="CSV形式で入力した盤面を適用" onClick={importTableCsv}>Import Table CSV</button>
       <button id="show_stat_log" onClick={showStatLog}>Show Stat Log</button>
@@ -77,7 +83,8 @@ function App() {
                     if(type2ShowPlayArea=="button"){
                     return <button id="mainSwitch" 
                           style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}//tableDataに応じて青赤変化
-                          onClick={()=>{setTableData(
+                          onClick={()=>{phase_counter=0;setDataAtReset()
+                            setTableData(
                             tableData.map((row,c_ind)=>(  //列で走査
                               c_ind==r?row.map(           //当該列・行で走査
                                 (col,r_ind)=>r_ind==c     //当該行
@@ -207,6 +214,7 @@ function handleShowAsButton(){
 
 function setTableRandom(randomize=0){
   phase_counter=0
+  setDataAtReset()
   stat_log=[]
   const row_data:boolean[][]=[]  //行データ
   let   col_data:boolean[]=[]    //列データ
@@ -424,6 +432,29 @@ function showStatLog(){
   setStringedJson(csv)
   return 
 }
+
+function exportJsonAtReset(){
+  setStringedJson(dataAtReset)
+}
+
+function setDataAtReset(){
+  dataAtReset=JSON.stringify(
+    {
+      row_length:row_length,
+      col_length:col_length,
+      phase_counter:phase_counter,
+      hasLoop:hasLoop,
+      interval_time:interval_time,
+      interval_ids:interval_ids,
+      randomize:randomize,
+      tableData:tableData
+    }
+  )
+  return
+}
+
+
+setDataAtReset()
 
 }
 
