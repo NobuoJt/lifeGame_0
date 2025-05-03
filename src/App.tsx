@@ -68,7 +68,8 @@ function App() {
       <h2>Info</h2>
       <p>Version: {packageJson?.version}</p>
       <p>Author: {packageJson?.author}</p>
-      <p>License: {packageJson?.license}</p>
+      <p>License: {packageJson?.licenses?.[0]?.type}</p>
+      <p>Link to License: {packageJson?.licenses?.[0]?.url}</p>
       <p>Repository: {packageJson?.repository?.url}</p>
       <p>Copyright: {packageJson?.copyright}</p>
       <div id="colorSet">

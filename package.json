@@ -5,7 +5,12 @@
     "type": "module",
     "author": "NobuoJT",
     "copyright": "2023 NobuoJT",
-    "license": "MIT",
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    ],
     "description": "A simple life game implemented in React and TypeScript.",
     "keywords": [
         "react",
@@ -22,9 +27,11 @@
         "dev": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "license-check": "node ./licenses/__generate-licenses.cjs"
     },
     "dependencies": {
+        "csv-writer": "^1.6.0",
         "license-checker": "^25.0.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",

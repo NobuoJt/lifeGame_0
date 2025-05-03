@@ -65,6 +65,16 @@ export default defineConfig({
 ```npx license-checker --json```
 ```npx license-checker --csv```
 
+## 8 /vscode/settings.json
+
+```"cSpell.ignorePaths":["**/node_modules/**","licenses/**"],```
+
+## 9 licenses/generate-licenses.js
+
+実行。
+そしてメインプログラムの見えるところにライセンス表示と作者表示、使用ライセンス一覧を表示。
+GitHubのライセンス本文とlicenses/へのリンクを貼る。
+
 # 詰まったところ
 
 Red Hat Dependency Analyticsが勝手に
