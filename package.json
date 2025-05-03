@@ -1,9 +1,9 @@
 {
     "name": "lifegame_0",
     "private": true,
-    "version": "1.0.5-d",
+    "version": "1.0.5-e",
     "type": "module",
-    "author":"NobuoJT",
+    "author": "NobuoJT",
     "copyright": "2023 NobuoJT",
     "license": "MIT",
     "description": "A simple life game implemented in React and TypeScript.",
@@ -16,7 +16,8 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/NobuoJt/lifeGame_0"},
+        "url": "https://github.com/NobuoJt/lifeGame_0"
+    },
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
@@ -24,6 +25,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "license-checker": "^25.0.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "vitest": "^3.1.2"

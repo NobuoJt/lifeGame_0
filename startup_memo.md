@@ -58,6 +58,13 @@ export default defineConfig({
 
 ## 6 git環境構築
 
+## 7 license-checker
+
+```npx license-checker```
+```npx license-checker --json```
+```npx license-checker --csv```
+```npx license-checker --summary```
+
 # 詰まったところ
 
 Red Hat Dependency Analyticsが勝手に
@@ -95,7 +102,6 @@ $ docker compose down
 
 # やりたいこと
 
-## カラー設定ページ
 ## グラフ機能
 ## ライセンス関連
 ## スマホ対応
