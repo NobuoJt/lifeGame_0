@@ -66,11 +66,13 @@ function App() {
     mainContent=<div id="option_area">
       <h1>Option</h1>
       <h2>Info</h2>
+      <p>Name: {packageJson?.name}</p>
       <p>Version: {packageJson?.version}</p>
       <p>Author: {packageJson?.author}</p>
       <p>License: {packageJson?.licenses?.[0]?.type}</p>
-      <p>Link to License: {packageJson?.licenses?.[0]?.url}</p>
-      <p>Repository: {packageJson?.repository?.url}</p>
+      <p>Link to License Text: <a target='blank' href="https://github.com/NobuoJt/lifeGame_0/blob/main/LICENSE">https://github.com/NobuoJt/lifeGame_0/blob/main/LICENSE</a></p>
+      <p>List of OSS license used: <a href="https://github.com/NobuoJt/lifeGame_0/tree/main/licenses">https://github.com/NobuoJt/lifeGame_0/tree/main/licenses</a></p>
+      <p>Repository: <a href="{packageJson?.repository?.url}">{packageJson?.repository?.url}</a></p>
       <p>Copyright: {packageJson?.copyright}</p>
       <div id="colorSet">
         <h2>Color Setting</h2>
