@@ -119,15 +119,17 @@ function App() {
       </div>
       
       <div id="menu">   {/** 下部設定エリア */}
-        <div id="table_cnt_out">
-          <p> Count<br></br>Set </p>
-          <div id="table_cnt_in">
-            <p>Row</p>
-            <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
-            <p>Col</p>
-            <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
-          </div>
-          <button onClick={extend}>Extend</button>
+        
+      <div id="button_show">
+          <p>ShowAs</p>
+          <select id="show_as" onChange={()=>{handleShowAsButton()}}>
+            <option value="button">Button</option>
+            <option value="none">None</option>
+            <option value="tile">Tile</option>
+            <option value="ExportImport">Ex/Import</option>
+            <option value="option">Option</option>
+            <option value="graph">Graph</option>
+          </select>
         </div>
 
         <div id="phase">
@@ -160,16 +162,16 @@ function App() {
           <p id="barthes">Barth:<br></br>{barth_count}</p>
           <p id="deaths">Death:<br></br>{death_count}</p>
         </div>
-        <div id="button_show">
-          <p>ShowAs</p>
-          <select id="show_as" onChange={()=>{handleShowAsButton()}}>
-            <option value="button">Button</option>
-            <option value="none">None</option>
-            <option value="tile">Tile</option>
-            <option value="ExportImport">Ex/Import</option>
-            <option value="option">Option</option>
-            <option value="graph">Graph</option>
-          </select>
+
+        <div id="table_cnt_out">
+          <p> Count<br></br>Set </p>
+          <div id="table_cnt_in">
+            <p>Row</p>
+            <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
+            <p>Col</p>
+            <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
+          </div>
+          <button onClick={extend}>Extend</button>
         </div>
       </div>
     </>
