@@ -49,6 +49,8 @@ function App() {
 
   const [stringed_json,setStringedJson]=useState("")   //インポート・エクスポート用の文字列データ
 
+  const [dead_color,setDeadColor]=useState('midnightblue')  //盤面死亡数の管理
+  const [live_color,setLiveColor]=useState('yellow')  //盤面死亡数の管理
 
   let mainContent=<></> //メインコンテンツ用のJSX
 
@@ -63,11 +65,19 @@ function App() {
   if(type2ShowPlayArea=="option"){
     mainContent=<div id="option_area">
       <h1>Option</h1>
+      <h2>Info</h2>
       <p>Version: {packageJson?.version}</p>
       <p>Author: {packageJson?.author}</p>
       <p>License: {packageJson?.license}</p>
       <p>Repository: {packageJson?.repository?.url}</p>
       <p>Copyright: {packageJson?.copyright}</p>
+      <div id="colorSet">
+        <h2>Color Setting</h2>
+        <p>Live Color</p>
+        <input type="color" value={live_color} onChange={changeLiveColor}   id="live_color"></input>
+        <p>Dead Color</p>
+        <input type="color" value={dead_color} onChange={changeDeadColor}  id="dead_color"></input>
+      </div>
     </div>
   }
 
@@ -104,7 +114,7 @@ function App() {
                   {function(){
                     if(type2ShowPlayArea=="button"){
                     return <button id="mainSwitch" 
-                          style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}//tableDataに応じて青赤変化
+                          style={{backgroundColor:tableData[r][c]?live_color:dead_color}}//tableDataに応じて青赤変化
                           onClick={()=>{phase_counter=0;setDataAtReset()
                             setTableData(
                             tableData.map((row,c_ind)=>(  //列で走査
@@ -117,7 +127,7 @@ function App() {
                         </button>
                     }
                     if(type2ShowPlayArea=="tile"){
-                      return <div style={{backgroundColor:tableData[r][c]?'yellow':'midnightblue'}}></div>
+                      return <div style={{backgroundColor:tableData[r][c]?live_color:dead_color}}></div>
                     }
                     if(type2ShowPlayArea=="none"){return <div></div>}
                     return <div></div>
@@ -210,6 +220,18 @@ function App() {
 
 
 /** プログラム領域 */
+
+function changeDeadColor(e:React.ChangeEvent<HTMLInputElement>){
+  const elem=document.getElementById("dead_color") as HTMLInputElement
+  setDeadColor(e.target.value)
+  elem.style.backgroundColor=e.target.value
+}
+
+function changeLiveColor(e:React.ChangeEvent<HTMLInputElement>){
+  const elem=document.getElementById("live_color") as HTMLInputElement
+  setLiveColor(e.target.value)
+  elem.style.backgroundColor=e.target.value
+}
 
 /** 自動ステップの実行 */
 function handleInterval(){
