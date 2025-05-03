@@ -61,9 +61,9 @@ export default defineConfig({
 ## 7 license-checker
 
 ```npx license-checker```
+```npx license-checker --summary```
 ```npx license-checker --json```
 ```npx license-checker --csv```
-```npx license-checker --summary```
 
 # 詰まったところ
 
