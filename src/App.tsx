@@ -51,9 +51,9 @@ function App() {
       <button id="export" onClick={exportJson}>Export JSON</button>
       <button id="import" onClick={importJson}>Import JSON</button>
       <button id="export_table_csv" onClick={exportTableCsv}>Export Table CSV</button>
-      <button id="export_table_csv" onClick={exportStatLog}>Export Stat Log JSON</button>
-      <button id="export_table_csv" onClick={exportStatLogCSV}>Export Stat Log CSV</button>
-     
+      <button id="import_table_csv" onClick={importTableCsv}>Import Table CSV</button>
+      <button id="show_stat_log" onClick={showStatLog}>Show Stat Log</button>
+
       <textarea id="export" onChange={(e)=>{setStringedJson(e.target.value)}} value={stringed_json}></textarea>
       </div>
   }
@@ -400,13 +400,26 @@ function exportTableCsv(){
   return 
 }
 
-function exportStatLog(){
-  const csv:string=stat_log.map((e)=>(JSON.stringify(e))).join("\n")
-  setStringedJson(csv)
+function importTableCsv(){
+
+  try {
+    const j=stringed_json.split("\n").map((e)=>e.split(",").map((f)=>f=="true"?true:false))
+    console.log(j)
+    // eslint-disable-next-line no-debugger
+    debugger
+    setTableData(j)
+  } catch (err: unknown) {
+    if (err instanceof Error && err.name !== "SyntaxError") {
+      console.error(err);
+    }
+    return;
+  }
+
+
   return 
 }
 
-function exportStatLogCSV(){
+function showStatLog(){
   const csv:string=stat_log.map((e)=>[e?.phase_counter,e?.row_length,e?.col_length,e?.live_count,e?.barth_count,e?.death_count]).join("\n")
   setStringedJson(csv)
   return 
