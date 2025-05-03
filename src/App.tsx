@@ -20,12 +20,17 @@ let interval_ids:NodeJS.Timeout[]=[]
 /** リセット時のデータ */
 let dataAtReset:string=""
 
+/** バージョン情報の表示 */
 if(!document.title.match(packageJson.version)){
   document.title+=` (${packageJson.version})`
   console.log(`version=(${packageJson.version})`)
 }
+
+
 /** メイン。再描画時に呼ばれる */ 
 function App() {
+
+  /** 表示用ステート管理 */
 
   const [row_length,setRowLength]=useState(20)  //行row数の管理
   const [col_length,setColLength]=useState(20)  //列col数の管理
@@ -33,7 +38,6 @@ function App() {
   const [randomize,setRandomize]=useState(50)  //ランダム生成%
   const [interval_time,setIntervalTime]=useState(500)  //自動ステップインターバル時間
   
-
   const [tableData,setTableData]=useState([[false]])  //盤面データの管理
   const [live_count,setLiveCount]=useState(0)  //盤面生存数の管理
   const [barth_count,setBarthCount]=useState(0)  //盤面誕生数の管理
@@ -43,14 +47,18 @@ function App() {
 
   const [hasLoop,setLoop]=useState(true)  //画面端を逆側にループさせるか
 
-  const [stringed_json,setStringedJson]=useState("")  
+  const [stringed_json,setStringedJson]=useState("")   //インポート・エクスポート用の文字列データ
 
 
-  let mainContent=<></>
+  let mainContent=<></> //メインコンテンツ用のJSX
 
   if(table_mapped===false){   //盤面ランダム化
     setTableRandom(0)
   }
+
+  /** 描画関連 */
+
+  /** コンテンツ：インポート・エクスポート */
   if(type2ShowPlayArea=="ExportImport"){
     mainContent=<div id="export_import_area">
       <button id="export" title="JSON形式で現状のデータを出力" onClick={exportJson}>Export JSON</button>
@@ -64,6 +72,7 @@ function App() {
       </div>
   }
 
+  /** コンテンツ；盤面出力 */
   if(type2ShowPlayArea=="button"||type2ShowPlayArea=="none"||type2ShowPlayArea=="tile"){/*メインコンテンツ=盤面*/
     mainContent=        
     <table><tbody>
@@ -117,7 +126,7 @@ function App() {
 
 
 
-
+//** ベースJSX ここでコンテンツをあわせる */
   return (  //DOM挿入
     <>
       <div id="playArea"> {/**盤面*/}
@@ -184,10 +193,12 @@ function App() {
     </>
   )
 
+
+
+
 /** プログラム領域 */
 
-
-
+/** 自動ステップの実行 */
 function handleInterval(){
   const has_auto_elem=document.getElementById("hasAuto") as HTMLInputElement
   if(has_auto_elem.checked){
@@ -207,11 +218,13 @@ function handleInterval(){
   }
 }
 
+/** メイン画面の表示モード変更 */
 function handleShowAsButton(){
   const elem=document.getElementById("show_as") as HTMLInputElement
   setType2ShowPlayArea(elem.value)
 }
 
+/** 盤面のリセット・ランダム化 */
 function setTableRandom(randomize=0){
   phase_counter=0
   setDataAtReset()
@@ -230,6 +243,7 @@ function setTableRandom(randomize=0){
   setTableData(row_data)   //盤面更新
 }
 
+/** ステップ実行 */
 function nextPhase(){
   let new_table_data:boolean[][]
   let ch_flag=false//変更あり?
@@ -343,6 +357,7 @@ function getTableDataWithOffset(
   return output;
 }
 
+/** 盤面の拡張 */
 function extend(){
 
   const row_data:boolean[][]=[]  //行データ
@@ -365,6 +380,7 @@ function extend(){
 
 }
 
+/** JSON形式での情報出力 */
 function exportJson(){
   setStringedJson(JSON.stringify(
     {
@@ -381,7 +397,7 @@ function exportJson(){
   return 
 }
 
-
+/** JSON形式での情報入力 */
 function importJson(){
   try {
     JSON.parse(stringed_json);
@@ -404,14 +420,15 @@ function importJson(){
 
 }
 
+/** CSV形式での盤面出力 */
 function exportTableCsv(){
   const csv:string=tableData.join("\n")
   setStringedJson(csv)
   return 
 }
 
+/** CSV形式での盤面入力 */
 function importTableCsv(){
-
   try {
     const j=stringed_json.split("\n").map((e)=>e.split(",").map((f)=>f=="true"?true:false))
     console.log(j)
@@ -427,16 +444,19 @@ function importTableCsv(){
   return 
 }
 
+/** CSV形式での統計情報出力 */
 function showStatLog(){
   const csv:string=stat_log.map((e)=>[e?.phase_counter,e?.row_length,e?.col_length,e?.live_count,e?.barth_count,e?.death_count]).join("\n")
   setStringedJson(csv)
   return 
 }
 
+/** JSON形式での初期化時の情報出力 */
 function exportJsonAtReset(){
   setStringedJson(dataAtReset)
 }
 
+/** 初期化時の情報を登録 */
 function setDataAtReset(){
   dataAtReset=JSON.stringify(
     {
@@ -454,10 +474,9 @@ function setDataAtReset(){
 }
 
 
-setDataAtReset()
-
 }
 
+/** Appコンポーネントのエクスポート =実行 */
 export default App
 
 
