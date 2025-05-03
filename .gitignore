@@ -26,3 +26,4 @@ dist-ssr
 #user
 *.log
 *.secret
+license_modules.json
