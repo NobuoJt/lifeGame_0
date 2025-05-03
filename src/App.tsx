@@ -58,6 +58,19 @@ function App() {
 
   /** 描画関連 */
 
+  /** コンテンツ：オプション */
+
+  if(type2ShowPlayArea=="option"){
+    mainContent=<div id="option_area">
+      <h1>Option</h1>
+      <p>Version: {packageJson?.version}</p>
+      <p>Author: {packageJson?.author}</p>
+      <p>License: {packageJson?.license}</p>
+      <p>Repository: {packageJson?.repository?.url}</p>
+      <p>Copyright: {packageJson?.copyright}</p>
+    </div>
+  }
+
   /** コンテンツ：インポート・エクスポート */
   if(type2ShowPlayArea=="ExportImport"){
     mainContent=<div id="export_import_area">
