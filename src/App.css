@@ -64,6 +64,7 @@ div{
   grid-auto-flow: column;
   align-items: center;
   margin: auto;
+  color:white;
 
 
   p{
@@ -91,6 +92,11 @@ div{
 
   button,input{
     margin:5px;
+  }
+
+  #button_show{
+    background: purple;
+    color: white;
   }
 
   #table_cnt_out{
@@ -125,7 +131,7 @@ div{
 
     button{
       background: lightgreen;
-      
+      color: black;
     }
   }
 
@@ -164,6 +170,7 @@ div{
   }
   button#next{
     background: lightcoral;
+    color:black;
   }
   button#reset{
     background: black;
@@ -192,26 +199,31 @@ div{
 
 }
 
-div#stat{
+div#export_import_area{
   textarea#export{
     width: 100%;
     height: 90%;
     background-color: midnightblue;
     color: aliceblue;
   }
-}
 
-button#export,button#import{
-  background: lightblue;
-  color: black;
-}
+  button{
+    border: white 1px solid;
+    margin: 2px;
+  }
 
-button#export_table_csv,button#import_table_csv{
-  background: lightsalmon;
-  color: black;
-}
+  button#export,button#import{
+    background: lightblue;
+    color: black;
+  }
 
-button#show_stat_log{
-  background: lightgreen;
-  color: black;
+  button#export_table_csv,button#import_table_csv{
+    background: lightsalmon;
+    color: black;
+  }
+
+  button#show_stat_log{
+    background: lightgreen;
+    color: black;
+  }
 }

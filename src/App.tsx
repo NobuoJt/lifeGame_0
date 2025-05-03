@@ -47,14 +47,14 @@ function App() {
     setTableRandom(0)
   }
   if(type2ShowPlayArea=="ExportImport"){
-    mainContent=<div id="stat">
-      <button id="export" onClick={exportJson}>Export JSON</button>
-      <button id="import" onClick={importJson}>Import JSON</button>
-      <button id="export_table_csv" onClick={exportTableCsv}>Export Table CSV</button>
-      <button id="import_table_csv" onClick={importTableCsv}>Import Table CSV</button>
+    mainContent=<div id="export_import_area">
+      <button id="export" title="JSON形式で現状のデータを出力" onClick={exportJson}>Export JSON</button>
+      <button id="import" title="JSON形式で入力したデータを適用" onClick={importJson}>Import JSON</button>
+      <button id="export_table_csv" title="CSV形式で盤面を出力" onClick={exportTableCsv}>Export Table CSV</button>
+      <button id="import_table_csv" title="CSV形式で入力した盤面を適用" onClick={importTableCsv}>Import Table CSV</button>
       <button id="show_stat_log" onClick={showStatLog}>Show Stat Log</button>
 
-      <textarea id="export" onChange={(e)=>{setStringedJson(e.target.value)}} value={stringed_json}></textarea>
+      <textarea id="export" title="入出力エリア" onChange={(e)=>{setStringedJson(e.target.value)}} value={stringed_json}></textarea>
       </div>
   }
 
@@ -119,59 +119,59 @@ function App() {
       </div>
       
       <div id="menu">   {/** 下部設定エリア */}
-        
-      <div id="button_show">
-          <p>ShowAs</p>
-          <select id="show_as" onChange={()=>{handleShowAsButton()}}>
-            <option value="button">Button</option>
-            <option value="none">None</option>
-            <option value="tile">Tile</option>
-            <option value="ExportImport">Ex/Import</option>
-            <option value="option">Option</option>
-            <option value="graph">Graph</option>
+
+      <div id="button_show" title="上部画面の表示モード選択" >
+          <p>Mode</p>
+          <select id="show_as" title="上部画面の表示モード選択" onChange={()=>{handleShowAsButton()}}>
+            <option value="button" title="クリック可能な盤面">Button</option>
+            <option value="none" title="無表示">None</option>
+            <option value="tile" title="クリック不可能な盤面(全体表示)">Tile</option>
+            <option value="ExportImport" title="データの入出力">Ex/Import</option>
+            <option value="option" title="設定">Option</option>
+            <option value="graph" title="グラフ出力">Graph</option>
           </select>
         </div>
 
-        <div id="phase">
-          <button id="next" onClick={()=>{nextPhase()}}>Next<br></br>step</button>
-          <p> Step: {phase_counter}</p>
-          <div>
+        <div id="phase" >
+          <button id="next" title="ステップ進行ボタン"  onClick={()=>{nextPhase()}}>Next<br></br>step</button>
+          <p title="ステップカウント" > Step: {phase_counter}</p>
+          <div title="盤面の両端をループさせるか否か">
             <p>Opposite loop</p>
             <input type="checkbox" id="hasLoop" checked={hasLoop} onChange={()=>{setLoop(!hasLoop)}}></input>
           </div>
         </div>
 
-        <div id="auto_step">
+        <div id="auto_step" title="自動ステップの設定">
           <p> Step time(ms) </p>
-          <input type="number" id="step_time" value={interval_time} onChange={(e)=>{setIntervalTime(Number(e.target.value))}}></input>
+          <input type="number" id="step_time" title="自動ステップ時間" value={interval_time} onChange={(e)=>{setIntervalTime(Number(e.target.value))}}></input>
           <p> AutoStep<br></br>run</p>
-          <input type="checkbox" id="hasAuto" onChange={()=>{handleInterval()}}></input>
+          <input type="checkbox" id="hasAuto" title="自動ステップ有効化" onChange={()=>{handleInterval()}}></input>
         </div>
 
         <div id="reset">
-          <button id="reset" onClick={()=>{setTableRandom(0)}}>Kill ALL</button>
-          <div id='random'>
-            <input type="number" value={randomize} onChange={(e)=>{setRandomize(Number(e.target.value))}}></input>
+          <button id="reset" title="盤面全削除" onClick={()=>{setTableRandom(0)}}>Kill ALL</button>
+          <div id='random' title="ランダム化">
+            <input type="number" title="ランダム率" value={randomize} onChange={(e)=>{setRandomize(Number(e.target.value))}}></input>
             <p>% </p>
-            <button id="Random" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
+            <button id="Random" title="ランダム化実行" onClick={()=>{setTableRandom(randomize/100)}}>randomize</button>
           </div>
         </div>
 
-        <div id="stat">
-          <p id="lives">Live:<br></br>{live_count}</p>
-          <p id="barthes">Barth:<br></br>{barth_count}</p>
-          <p id="deaths">Death:<br></br>{death_count}</p>
+        <div id="stat" title="統計情報">
+          <p id="lives" title="今ステップ生存数">Live:<br></br>{live_count}</p>
+          <p id="barthes" title="今ステップ誕生数">Barth:<br></br>{barth_count}</p>
+          <p id="deaths" title="今ステップ死亡数">Death:<br></br>{death_count}</p>
         </div>
 
-        <div id="table_cnt_out">
+        <div id="table_cnt_out" title="盤面サイズ変更">
           <p> Count<br></br>Set </p>
           <div id="table_cnt_in">
             <p>Row</p>
-            <input type="number" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
+            <input type="number" title="行数(盤面リセット)" value={row_length} onChange={(e)=>{table_mapped=false;setRowLength(Number(e.target.value))}}></input>
             <p>Col</p>
-            <input type="number" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
+            <input type="number" title="列数(盤面リセット)" value={col_length} onChange={(e)=>{table_mapped=false;setColLength(Number(e.target.value))}}></input>
           </div>
-          <button onClick={extend}>Extend</button>
+          <button title="拡張(盤面維持)" onClick={extend}>Extend</button>
         </div>
       </div>
     </>
@@ -407,8 +407,6 @@ function importTableCsv(){
   try {
     const j=stringed_json.split("\n").map((e)=>e.split(",").map((f)=>f=="true"?true:false))
     console.log(j)
-    // eslint-disable-next-line no-debugger
-    debugger
     setTableData(j)
   } catch (err: unknown) {
     if (err instanceof Error && err.name !== "SyntaxError") {
