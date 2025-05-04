@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import packageJson from "../package.json"
 import './App.css'
-import "plotly.js-dist"
+//@ts-expect-error [missing .d.ts file]
+import Plotly from "plotly.js-dist"
 
 
 /**再描画フラグ。ないと無限ループ。*/
@@ -59,6 +60,42 @@ function App() {
   }
 
   /** 描画関連 */
+
+if(type2ShowPlayArea=="graph"){
+  
+  mainContent=<div id="graph_area">
+    <div id="plot_area" title='graph_zone'></div>
+      
+
+  </div>
+
+}
+
+setTimeout(() => {
+  if(document.getElementById("plot_area")?.title){
+  console.log("first")
+
+  const data = [
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.live_count),type: 'scatter',name:"生存数"},
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.barth_count),type: 'scatter',name:"誕生数"},
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.death_count),type: 'scatter',name:"死亡数"},
+  ];
+  const layout = {
+      title: 'test graph',
+      yaxis: {
+        titlefont: {color: 'rgb(148, 103, 189)'},
+        tickfont: {color: 'rgb(148, 103, 189)'},
+      },
+      yaxis2: {
+          titlefont: {color: 'rgb(148, 103, 189)'},
+          tickfont: {color: 'rgb(148, 103, 189)'},
+          overlaying: 'y',
+          side: 'right'
+      }
+  };
+  Plotly.newPlot('plot_area', data,layout,{responsive: true});
+}
+}, 1);
 
   /** コンテンツ：オプション */
 
@@ -260,6 +297,12 @@ function handleInterval(){
 function handleShowAsButton(){
   const elem=document.getElementById("show_as") as HTMLInputElement
   setType2ShowPlayArea(elem.value)
+
+
+
+
+
+
 }
 
 /** 盤面のリセット・ランダム化 */
