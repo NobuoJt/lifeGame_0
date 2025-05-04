@@ -155,14 +155,15 @@ setTimeout(() => {
                     if(type2ShowPlayArea=="button"){
                     return <button id="mainSwitch" 
                           style={{backgroundColor:tableData[r][c]?live_color:dead_color}}//tableDataに応じて青赤変化
-                          onClick={()=>{phase_counter=0;setDataAtReset()
-                            setTableData(
-                            tableData.map((row,c_ind)=>(  //列で走査
+                          onClick={()=>{
+                            phase_counter=0;
+                            const new_table_data=tableData.map((row,c_ind)=>(  //列で走査
                               c_ind==r?row.map(           //当該列・行で走査
                                 (col,r_ind)=>r_ind==c     //当該行
                                   ?!col:col               //反転・else非反転
                               ):row                       //else非反転
-                            )))}}
+                            ))
+                            setTableData(new_table_data);setDataAtReset(new_table_data);stat_log=[]}}
                           >
                         </button>
                     }
@@ -308,7 +309,6 @@ function handleShowAsButton(){
 /** 盤面のリセット・ランダム化 */
 function setTableRandom(randomize=0){
   phase_counter=0
-  setDataAtReset()
   stat_log=[]
   const row_data:boolean[][]=[]  //行データ
   let   col_data:boolean[]=[]    //列データ
@@ -322,6 +322,7 @@ function setTableRandom(randomize=0){
   }
   table_mapped=true
   setTableData(row_data)   //盤面更新
+  setDataAtReset(row_data)
 }
 
 /** ステップ実行 */
@@ -498,6 +499,7 @@ function importJson(){
   interval_ids=j?.interval_ids
   setRandomize(j?.randomize)
   setTableData(j?.tableData)
+  stat_log=[]
 
 }
 
@@ -514,6 +516,7 @@ function importTableCsv(){
     const j=stringed_json.split("\n").map((e)=>e.split(",").map((f)=>f=="true"?true:false))
     console.log(j)
     setTableData(j)
+    stat_log=[]
   } catch (err: unknown) {
     if (err instanceof Error && err.name !== "SyntaxError") {
       console.error(err);
@@ -538,7 +541,7 @@ function exportJsonAtReset(){
 }
 
 /** 初期化時の情報を登録 */
-function setDataAtReset(){
+function setDataAtReset(tableData_alt=tableData){
   dataAtReset=JSON.stringify(
     {
       row_length:row_length,
@@ -548,7 +551,7 @@ function setDataAtReset(){
       interval_time:interval_time,
       interval_ids:interval_ids,
       randomize:randomize,
-      tableData:tableData
+      tableData:tableData_alt
     }
   )
   return
