@@ -46,13 +46,28 @@ ADD
 ## 6 docker define
 
 - dockerfile
+  - コンテナ内にホストのボリュームをアタッチして開発する場合←
+    - あとからホストのpackage.jsonがアタッチされてしまう
+  - コンテナ内に入って開発する場合
+  - 本番用
+    - ボリュームアタッチは使わない。```COPY → RUN npm install```
 
 ```dockerfile
-FROM node:22-slim
+### コンテナ内にホストのボリュームをアタッチして開発する場合
+###                                 (<->コンテナ内完結開発)
+
+## ビルド時実行
+FROM node:23-slim
+
+# 作業ディレクトリを設定
 WORKDIR /app
+
+# パッケージファイルをコピー
 COPY package.json package-lock.json ./
-RUN npm install
-CMD ["npm", "run", "dev"]
+
+## 起動時実行
+# モジュールインストール & 開発用サーバの起動
+CMD ["sh", "-c", "npm install && npm run dev"]
 ```
 
 - compose.yaml
@@ -94,7 +109,7 @@ package.jsonの"name":hogehogeから"devDependencies"の下、hogehoge:"file:"�
 #主に初回のコンテナ起動時、すでにあるイメージを使用してコンテナを起動する時
 $ docker compose up -d
 
-#Dockerfileやcompose.yamlを編集した時
+#Dockerfileやcompose.yamlを編集した時、npm iが必要なとき。
 $ docker compose up -d --build
 
 #コンテナに入る時に使用 appはcompose.yamlのservicesの名前
