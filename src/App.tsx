@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import packageJson from "../package.json"
 import './App.css'
-
+import "plotly.js-dist"
 
 
 /**再描画フラグ。ないと無限ループ。*/
