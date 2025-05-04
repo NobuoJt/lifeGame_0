@@ -1,7 +1,12 @@
 {
     "cSpell.words": [
         "njsproj",
-        "ntvs"
+        "ntvs",
+        "tickfont",
+        "titlefont",
+        "yaxis"
     ],
-    "cSpell.ignorePaths":["**/node_modules/**","licenses/**"],
+    "cSpell.ignorePaths":["**/node_modules/**","package-lock.json","**/package-lock.json","**/yarn.lock","**/pnpm-lock.yaml","**/pnpm-lock.yml","**/pnpm-lock.json","**/pnpmfile.js","**/pnpmfile.cjs","**/pnpmfile.mjs",
+                            "**/dist/**","**/out/**","**/build/**","**/bin/**","**/obj/**"
+                            ,"licenses/**"],
 }

@@ -1,10 +1,10 @@
 {
     "name": "lifegame_0",
     "private": true,
-    "version": "1.0.5-e",
+    "version": "1.0.6-i",
     "type": "module",
     "author": "NobuoJT",
-    "copyright": "2023 NobuoJT",
+    "copyright": "2025 NobuoJT",
     "licenses": [
         {
             "type": "MIT",
@@ -33,6 +33,7 @@
     "dependencies": {
         "csv-writer": "^1.6.0",
         "license-checker": "^25.0.1",
+        "plotly.js-dist": "^3.0.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "vitest": "^3.1.2"

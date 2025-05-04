@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import packageJson from "../package.json"
 import './App.css'
-
+//@ts-expect-error [missing .d.ts file]
+import Plotly from "plotly.js-dist"
 
 
 /**再描画フラグ。ないと無限ループ。*/
@@ -60,17 +61,55 @@ function App() {
 
   /** 描画関連 */
 
+if(type2ShowPlayArea=="graph"){
+  
+  mainContent=<div id="graph_area">
+    <div id="plot_area" title='graph_zone'></div>
+      
+
+  </div>
+
+}
+
+setTimeout(() => {
+  if(document.getElementById("plot_area")?.title){
+  console.log("first")
+
+  const data = [
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.live_count),type: 'scatter',name:"生存数",line:{color:`rgb(0, 0, 0)`}},
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.barth_count),type: 'scatter',name:"誕生数",line:{color:`rgb(0, 255, 0)`}},
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.death_count),type: 'scatter',name:"死亡数",line:{color:`rgb(255, 0, 0)`}},
+  ];
+  const layout = {
+      title: 'test graph',
+      yaxis: {
+        titlefont: {color: 'rgb(148, 103, 189)'},
+        tickfont: {color: 'rgb(148, 103, 189)'},
+      },
+      yaxis2: {
+          titlefont: {color: 'rgb(148, 103, 189)'},
+          tickfont: {color: 'rgb(148, 103, 189)'},
+          overlaying: 'y',
+          side: 'right'
+      }
+  };
+  Plotly.newPlot('plot_area', data,layout,{responsive: true});
+}
+}, 1);
+
   /** コンテンツ：オプション */
 
   if(type2ShowPlayArea=="option"){
     mainContent=<div id="option_area">
       <h1>Option</h1>
       <h2>Info</h2>
+      <p>Name: {packageJson?.name}</p>
       <p>Version: {packageJson?.version}</p>
       <p>Author: {packageJson?.author}</p>
       <p>License: {packageJson?.licenses?.[0]?.type}</p>
-      <p>Link to License: {packageJson?.licenses?.[0]?.url}</p>
-      <p>Repository: {packageJson?.repository?.url}</p>
+      <p>Link to License Text: <a target='blank' href="https://github.com/NobuoJt/lifeGame_0/blob/main/LICENSE">https://github.com/NobuoJt/lifeGame_0/blob/main/LICENSE</a></p>
+      <p>List of OSS license used: <a href="https://github.com/NobuoJt/lifeGame_0/tree/main/licenses">https://github.com/NobuoJt/lifeGame_0/tree/main/licenses</a></p>
+      <p>Repository: <a href="{packageJson?.repository?.url}">{packageJson?.repository?.url}</a></p>
       <p>Copyright: {packageJson?.copyright}</p>
       <div id="colorSet">
         <h2>Color Setting</h2>
@@ -116,14 +155,15 @@ function App() {
                     if(type2ShowPlayArea=="button"){
                     return <button id="mainSwitch" 
                           style={{backgroundColor:tableData[r][c]?live_color:dead_color}}//tableDataに応じて青赤変化
-                          onClick={()=>{phase_counter=0;setDataAtReset()
-                            setTableData(
-                            tableData.map((row,c_ind)=>(  //列で走査
+                          onClick={()=>{
+                            phase_counter=0;
+                            const new_table_data=tableData.map((row,c_ind)=>(  //列で走査
                               c_ind==r?row.map(           //当該列・行で走査
                                 (col,r_ind)=>r_ind==c     //当該行
                                   ?!col:col               //反転・else非反転
                               ):row                       //else非反転
-                            )))}}
+                            ))
+                            setTableData(new_table_data);setDataAtReset(new_table_data);stat_log=[]}}
                           >
                         </button>
                     }
@@ -258,12 +298,17 @@ function handleInterval(){
 function handleShowAsButton(){
   const elem=document.getElementById("show_as") as HTMLInputElement
   setType2ShowPlayArea(elem.value)
+
+
+
+
+
+
 }
 
 /** 盤面のリセット・ランダム化 */
 function setTableRandom(randomize=0){
   phase_counter=0
-  setDataAtReset()
   stat_log=[]
   const row_data:boolean[][]=[]  //行データ
   let   col_data:boolean[]=[]    //列データ
@@ -277,6 +322,7 @@ function setTableRandom(randomize=0){
   }
   table_mapped=true
   setTableData(row_data)   //盤面更新
+  setDataAtReset(row_data)
 }
 
 /** ステップ実行 */
@@ -453,6 +499,7 @@ function importJson(){
   interval_ids=j?.interval_ids
   setRandomize(j?.randomize)
   setTableData(j?.tableData)
+  stat_log=[]
 
 }
 
@@ -469,6 +516,7 @@ function importTableCsv(){
     const j=stringed_json.split("\n").map((e)=>e.split(",").map((f)=>f=="true"?true:false))
     console.log(j)
     setTableData(j)
+    stat_log=[]
   } catch (err: unknown) {
     if (err instanceof Error && err.name !== "SyntaxError") {
       console.error(err);
@@ -493,7 +541,7 @@ function exportJsonAtReset(){
 }
 
 /** 初期化時の情報を登録 */
-function setDataAtReset(){
+function setDataAtReset(tableData_alt=tableData){
   dataAtReset=JSON.stringify(
     {
       row_length:row_length,
@@ -503,7 +551,7 @@ function setDataAtReset(){
       interval_time:interval_time,
       interval_ids:interval_ids,
       randomize:randomize,
-      tableData:tableData
+      tableData:tableData_alt
     }
   )
   return

@@ -12,22 +12,65 @@
 ## 2 install depend
 ```npm install```
 
-## 3 server trial 
-```npm run dev```
+## 3 vite.config.js define
+- vite.config.js
+- Dev: server Port
+- Build: Relative link default
+    ( / [=root] → ./ [=__dirname] )
+- reload 3000ms
 
-## 4 docker define
-
-- dockerfile
-- compose.yaml
-
-```dockerfile
-FROM node:22-slim
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
-CMD ["npm", "run", "dev"]
+```js
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    host: "0.0.0.0",
+    port: 3000,
+  },
+  watch: {
+      usePolling: true,
+      interval: 3000
+  },
+  base:'./',
+});
 ```
 
+## 4 server trial 
+```npm run dev```
+
+## 5 スペルチェッカーでの固有名詞ignore
+- /vscode/settings.json  
+ADD 
+```"cSpell.ignorePaths":["**/node_modules/**","licenses/**"],```
+
+## 6 docker define
+
+- dockerfile
+  - コンテナ内にホストのボリュームをアタッチして開発する場合←
+    - あとからホストのpackage.jsonがアタッチされてしまう
+  - コンテナ内に入って開発する場合
+  - 本番用
+    - ボリュームアタッチは使わない。```COPY → RUN npm install```
+
+```dockerfile
+### コンテナ内にホストのボリュームをアタッチして開発する場合
+###                                 (<->コンテナ内完結開発)
+
+## ビルド時実行
+FROM node:23-slim
+
+# 作業ディレクトリを設定
+WORKDIR /app
+
+# パッケージファイルをコピー
+COPY package.json package-lock.json ./
+
+## 起動時実行
+# モジュールインストール & 開発用サーバの起動
+CMD ["sh", "-c", "npm install && npm run dev"]
+```
+
+- compose.yaml
 ```yaml
 services:
   app:
@@ -39,40 +82,18 @@ services:
       - /app/node_modules
 ```
 
-## 5 vite.config.js define
-- Dev: server Port
-- Build: Relative link default
-    ( / [=root] → ./ [=__dirname] )
+## 7 license-checker で確認
+GPLはライセンス汚染するので注意
 
-```js
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: "0.0.0.0",
-    port: 3000,
-  },
-  base:'./',
-});
-```
-
-## 6 git環境構築
-
-## 7 license-checker
-
-```npx license-checker```
 ```npx license-checker --summary```
-```npx license-checker --json```
-```npx license-checker --csv```
 
-## 8 /vscode/settings.json
+## 8 依存ライセンスをまとめ、掲載する
 
-```"cSpell.ignorePaths":["**/node_modules/**","licenses/**"],```
+- licenses/generate-licenses.js   
 
-## 9 licenses/generate-licenses.js
-
-実行。
-そしてメインプログラムの見えるところにライセンス表示と作者表示、使用ライセンス一覧を表示。
+[ソース](https://github.com/NobuoJt/lifeGame_0/blob/main/licenses/__generate-licenses.cjs)  
+実行。  
+そしてメインプログラムの見えるところにライセンス表示と作者表示を表示。  
 GitHubのライセンス本文とlicenses/へのリンクを貼る。
 
 # 詰まったところ
@@ -88,7 +109,7 @@ package.jsonの"name":hogehogeから"devDependencies"の下、hogehoge:"file:"�
 #主に初回のコンテナ起動時、すでにあるイメージを使用してコンテナを起動する時
 $ docker compose up -d
 
-#Dockerfileやcompose.yamlを編集した時
+#Dockerfileやcompose.yamlを編集した時、npm iが必要なとき。
 $ docker compose up -d --build
 
 #コンテナに入る時に使用 appはcompose.yamlのservicesの名前
@@ -97,11 +118,12 @@ $ docker compose exec app bash
 #コンテナを終了
 $ docker compose down
 ```
+- 別にGUIから動かしても同じ。
 
 # Build to Html
+- dist/* へ  
 
 ```npm run build``` = tsc -b && vite build
->> dist/* へ
 
 # 記述規則
 
