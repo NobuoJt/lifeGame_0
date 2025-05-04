@@ -76,9 +76,9 @@ setTimeout(() => {
   console.log("first")
 
   const data = [
-    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.live_count),type: 'scatter',name:"生存数"},
-    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.barth_count),type: 'scatter',name:"誕生数"},
-    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.death_count),type: 'scatter',name:"死亡数"},
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.live_count),type: 'scatter',name:"生存数",line:{color:`rgb(0, 0, 0)`}},
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.barth_count),type: 'scatter',name:"誕生数",line:{color:`rgb(0, 255, 0)`}},
+    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.death_count),type: 'scatter',name:"死亡数",line:{color:`rgb(255, 0, 0)`}},
   ];
   const layout = {
       title: 'test graph',
