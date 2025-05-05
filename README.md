@@ -1,5 +1,3 @@
-![image](https://github.com/user-attachments/assets/014113d0-6e54-45b5-8a71-59e37b4164f3)# lifegame_0
-
 ライフゲーム作りました。
 https://lifegame-0.pages.dev/
 
