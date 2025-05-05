@@ -61,41 +61,45 @@ function App() {
 
   /** 描画関連 */
 
-if(type2ShowPlayArea=="graph"){
-  
-  mainContent=<div id="graph_area">
-    <div id="plot_area" title='graph_zone'></div>
-      
+  /** コンテンツ：なし */
+  if(type2ShowPlayArea=="none"){mainContent= <div></div>}
 
-  </div>
+  /** コンテンツ：グラフ */
+  if(type2ShowPlayArea=="graph"){
+    
+    mainContent=<div id="graph_area">
+      <div id="plot_area" title='graph_zone'></div>
+        
 
-}
+    </div>
 
-setTimeout(() => {
-  if(document.getElementById("plot_area")?.title){
-  console.log("first")
+  }
 
-  const data = [
-    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.live_count),type: 'scatter',name:"生存数",line:{color:`rgb(0, 0, 0)`}},
-    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.barth_count),type: 'scatter',name:"誕生数",line:{color:`rgb(0, 255, 0)`}},
-    {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.death_count),type: 'scatter',name:"死亡数",line:{color:`rgb(255, 0, 0)`}},
-  ];
-  const layout = {
-      title: 'test graph',
-      yaxis: {
-        titlefont: {color: 'rgb(148, 103, 189)'},
-        tickfont: {color: 'rgb(148, 103, 189)'},
-      },
-      yaxis2: {
+  setTimeout(() => {
+    if(document.getElementById("plot_area")?.title){
+    console.log("first")
+
+    const data = [
+      {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.live_count),type: 'scatter',name:"生存数",line:{color:`rgb(0, 0, 0)`}},
+      {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.barth_count),type: 'scatter',name:"誕生数",line:{color:`rgb(0, 255, 0)`}},
+      {x:stat_log.map((e)=>e.phase_counter),y:stat_log.map((e)=>e.death_count),type: 'scatter',name:"死亡数",line:{color:`rgb(255, 0, 0)`}},
+    ];
+    const layout = {
+        title: 'test graph',
+        yaxis: {
           titlefont: {color: 'rgb(148, 103, 189)'},
           tickfont: {color: 'rgb(148, 103, 189)'},
-          overlaying: 'y',
-          side: 'right'
-      }
-  };
-  Plotly.newPlot('plot_area', data,layout,{responsive: true});
-}
-}, 1);
+        },
+        yaxis2: {
+            titlefont: {color: 'rgb(148, 103, 189)'},
+            tickfont: {color: 'rgb(148, 103, 189)'},
+            overlaying: 'y',
+            side: 'right'
+        }
+    };
+    Plotly.newPlot('plot_area', data,layout,{responsive: true});
+  }
+  }, 1);
 
   /** コンテンツ：オプション */
 
@@ -136,7 +140,7 @@ setTimeout(() => {
   }
 
   /** コンテンツ；盤面出力 */
-  if(type2ShowPlayArea=="button"||type2ShowPlayArea=="none"||type2ShowPlayArea=="tile"){/*メインコンテンツ=盤面*/
+  if(type2ShowPlayArea=="button"||type2ShowPlayArea=="tile"){/*メインコンテンツ=盤面*/
     mainContent=        
     <table><tbody>
     {function(){
@@ -170,7 +174,7 @@ setTimeout(() => {
                     if(type2ShowPlayArea=="tile"){
                       return <div style={{backgroundColor:tableData[r][c]?live_color:dead_color}}></div>
                     }
-                    if(type2ShowPlayArea=="none"){return <div></div>}
+                    
                     return <div></div>
                   }()}
                 </td>
