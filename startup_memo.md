@@ -109,10 +109,17 @@ GitHubのライセンス本文とlicenses/へのリンクを貼る。
 
 # 詰まったところ
 
-Red Hat Dependency Analyticsが勝手に
-package.jsonの"name":hogehogeから"devDependencies"の下、hogehoge:"file:"に意地でも書こうとしてくるから、
-依存関係の循環参照になって詰まった。
-拡張機能をアンインストールして解決。
+## 循環参照
+Red Hat Dependency Analyticsが勝手に  
+package.jsonの"name":hogehogeから"devDependencies"の下、hogehoge:"file:"に意地でも書こうとしてくるから、  
+依存関係の循環参照になって詰まった。  
+拡張機能をアンインストールして解決。  
+
+## useState()
+```const [v,setFunc]=useState()```での```getFunc(v++)```は非同期的に実行されるため  
+関数内の```v```は現在の状態ではないかもしれない。  
+```setFunc((now_v)=>{return now_v++})```を使うことで現在の```v```を取得して実行が可能。  
+しかし、関わる変数が増えるとネストが増えるので、そういう処理は```useReducer()```を定義するべき。
 
 # docker commands
 
