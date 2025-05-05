@@ -448,21 +448,24 @@ function extend(){
 
   const row_data:boolean[][]=[]  //行データ
   let   col_data:boolean[]=[]    //列データ
-  setColLength(col_length+2)
-  setRowLength(row_length+2)
-  for(let c=0;c<row_length+2;c++){
-    col_data=[]
-    for(let r=0;r<col_length+2;r++){    
-      if(c>0&&r> 0&& c<tableData.length+1&&r<tableData[c-1].length+1){
-        col_data.push(tableData[c-1][r-1])
-      }else{
-        col_data.push(false)
+  setColLength((col_l)=>{
+    setRowLength((row_l)=>{
+      setTableData((td)=>{
+      for(let c=0;c<row_l+2;c++){
+        col_data=[]
+        for(let r=0;r<col_l+2;r++){    
+          if(c>0&&r> 0&& c<td.length+1&&r<td[c-1].length+1){
+            col_data.push(td[c-1][r-1])
+          }else{
+            col_data.push(false)
+          }
+        }
+        row_data.push(col_data)
       }
-    }
-    row_data.push(col_data)
-  }
-  table_mapped=true
-  setTableData(row_data)   //盤面更新
+      table_mapped=true
+      return row_data})   //盤面更新
+    return row_l+2})
+  return col_l+2})
 
 }
 
