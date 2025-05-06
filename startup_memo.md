@@ -6,8 +6,12 @@
 # project init config
 
 ## 1 viteプロジェクト作成
+```git init```
 ```npm create vite```
 (select and edit)
+
+```npm init```
+エントリーポイントはvite.config.ts
 
 ## 2 install depend
 ```npm install```
