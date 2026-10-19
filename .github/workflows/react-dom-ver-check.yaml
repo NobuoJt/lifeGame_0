@@ -1,0 +1,42 @@
+name: Check React Version Consistency
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # プロジェクトのNodeバージョンに合わせて変更してください
+
+      - name: Compare react and react-dom versions
+        run: |
+          # package.json からバージョンを抽出（^ や ~ などの記号を削除）
+          REACT_VER=$(node -p "require('./package.json').dependencies.react?.replace(/[^0-9.]/g, '')")
+          REACT_DOM_VER=$(node -p "require('./package.json').dependencies['react-dom']?.replace(/[^0-9.]/g, '')")
+
+          echo "Detected react version: $REACT_VER"
+          echo "Detected react-dom version: $REACT_DOM_VER"
+
+          # バージョンが空でないか、および一致しているかを確認
+          if [ -z "$REACT_VER" ] || [ -z "$REACT_DOM_VER" ]; then
+            echo "❌ Error: react or react-dom is missing in package.json"
+            exit 1
+          fi
+
+          if [ "$REACT_VER" != "$REACT_DOM_VER" ]; then
+            echo "❌ Error: react ($REACT_VER) and react-dom ($REACT_DOM_VER) versions do not match!"
+            exit 1
+          fi
+
+          echo "✅ Success: react and react-dom versions match."
