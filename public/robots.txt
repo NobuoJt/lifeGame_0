@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lifegame.nobuo.pgw.jp/sitemap.xml
