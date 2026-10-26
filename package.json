@@ -28,7 +28,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "license-check": "node ./licenses/__generate-licenses.cjs"
+    "license-check": "node ./licenses/__generate-licenses.cjs",
+    "test": "node --test test/*.test.cjs"
   },
   "dependencies": {
     "csv-writer": "^1.6.0",
