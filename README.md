@@ -9,14 +9,13 @@
 
 ### 開発
 
-- Docker(初) 実行環境として
-  - ファイルシステムはホストコンピュータから割当て
+- pnpm
 - Vite(初) 開発サーバー
 - React(初) TSX
 
 ### CI・デプロイ
 
-- GitHub Actions(初) Dockerコンポーズ
+- GitHub Actions(初) lint / build
 - Vite ビルド
 - Cloudflare Pages(初) ホスティング
 
@@ -119,15 +118,13 @@
 
 ## About 開発
 
-### Docker実行環境を使用する
+git clone して pnpm install で開発できます。
 
 ```sh
-docker pull nobuojt/lifegame_0:latest
-docker run -p 3000:3000 nobuojt/lifegame_0
+git clone git@github.com:NobuoJt/lifeGame_0.git
+cd lifeGame_0
+pnpm install
+pnpm run dev
 ```
 
-ブラウザで```localhost:3000```にアクセス
-
-#### Docker Repository
-
-[https://hub.docker.com/r/nobuojt/lifegame_0](https://hub.docker.com/r/nobuojt/lifegame_0)
+ブラウザで `http://localhost:5173/` にアクセス。
