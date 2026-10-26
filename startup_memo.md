@@ -7,14 +7,14 @@
 
 ## 1 viteプロジェクト作成
 ```git init```
-```npm create vite```
+```pnpm create vite```
 (select and edit)
 
-```npm init```
+```pnpm init```
 エントリーポイントはvite.config.ts
 
 ## 2 install depend
-```npm install```
+```pnpm install```
 
 ## 3 vite.config.js define
 - vite.config.js
@@ -51,7 +51,7 @@ export default defineConfig({
 ```
 
 ## 4 server trial 
-```npm run dev```
+```pnpm run dev```
 
 ## 5 スペルチェッカーでの固有名詞ignore
 - /vscode/settings.json  
@@ -65,7 +65,7 @@ ADD
     - あとからホストのpackage.jsonがアタッチされてしまう
   - コンテナ内に入って開発する場合
   - 本番用
-    - ボリュームアタッチは使わない。```COPY → RUN npm install```
+    - ボリュームアタッチは使わない。```COPY → RUN pnpm install```
 
 ```dockerfile
 ### コンテナ内にホストのボリュームをアタッチして開発する場合
@@ -78,11 +78,11 @@ FROM node:23-slim
 WORKDIR /app
 
 # パッケージファイルをコピー
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 
 ## 起動時実行
 # モジュールインストール & 開発用サーバの起動
-CMD ["sh", "-c", "npm install && npm run dev"]
+CMD ["sh", "-c", "pnpm install && pnpm run dev"]
 ```
 
 - compose.yaml
@@ -100,7 +100,7 @@ services:
 ## 7 license-checker で確認
 GPLはライセンス汚染するので注意
 
-```npx license-checker --summary```
+```pnpm exec license-checker --summary```
 
 ## 8 依存ライセンスをまとめ、掲載する
 
@@ -131,7 +131,7 @@ package.jsonの"name":hogehogeから"devDependencies"の下、hogehoge:"file:"�
 #主に初回のコンテナ起動時、すでにあるイメージを使用してコンテナを起動する時
 $ docker compose up -d
 
-#Dockerfileやcompose.yamlを編集した時、npm iが必要なとき。
+#Dockerfileやcompose.yamlを編集した時、pnpm i が必要なとき。
 $ docker compose up -d --build
 
 #コンテナに入る時に使用 appはcompose.yamlのservicesの名前
@@ -145,7 +145,7 @@ $ docker compose down
 # Build to Html
 - dist/* へ  
 
-```npm run build``` = tsc -b && vite build
+```pnpm run build``` = tsc -b && vite build
 
 # 記述規則
 
