@@ -28,7 +28,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "license-check": "node ./licenses/__generate-licenses.cjs"
+    "license-check": "node ./licenses/__generate-licenses.cjs",
+    "test": "node --test test/*.test.cjs"
   },
   "dependencies": {
     "csv-writer": "^1.6.0",
@@ -46,10 +47,10 @@
     "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.4.19",
+    "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
     "typescript": "~5.7.2",
-    "typescript-eslint": "^8.24.1",
+    "typescript-eslint": "^8.72.0",
     "vite": "^6.4.1"
   },
   "packageManager": "pnpm@12.15.0"

@@ -58,51 +58,12 @@ export default defineConfig({
 ADD 
 ```"cSpell.ignorePaths":["**/node_modules/**","licenses/**"],```
 
-## 6 docker define
-
-- dockerfile
-  - コンテナ内にホストのボリュームをアタッチして開発する場合←
-    - あとからホストのpackage.jsonがアタッチされてしまう
-  - コンテナ内に入って開発する場合
-  - 本番用
-    - ボリュームアタッチは使わない。```COPY → RUN pnpm install```
-
-```dockerfile
-### コンテナ内にホストのボリュームをアタッチして開発する場合
-###                                 (<->コンテナ内完結開発)
-
-## ビルド時実行
-FROM node:23-slim
-
-# 作業ディレクトリを設定
-WORKDIR /app
-
-# パッケージファイルをコピー
-COPY package.json pnpm-lock.yaml ./
-
-## 起動時実行
-# モジュールインストール & 開発用サーバの起動
-CMD ["sh", "-c", "pnpm install && pnpm run dev"]
-```
-
-- compose.yaml
-```yaml
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-```
-
-## 7 license-checker で確認
+## 6 license-checker で確認
 GPLはライセンス汚染するので注意
 
 ```pnpm exec license-checker --summary```
 
-## 8 依存ライセンスをまとめ、掲載する
+## 7 依存ライセンスをまとめ、掲載する
 
 - licenses/generate-licenses.js   
 
@@ -124,23 +85,6 @@ package.jsonの"name":hogehogeから"devDependencies"の下、hogehoge:"file:"�
 関数内の```v```は現在の状態ではないかもしれない。  
 ```setFunc((now_v)=>{return now_v++})```を使うことで現在の```v```を取得して実行が可能。  
 しかし、関わる変数が増えるとネストが増えるので、そういう処理は```useReducer()```を定義するべき。
-
-# docker commands
-
-```sh
-#主に初回のコンテナ起動時、すでにあるイメージを使用してコンテナを起動する時
-$ docker compose up -d
-
-#Dockerfileやcompose.yamlを編集した時、pnpm i が必要なとき。
-$ docker compose up -d --build
-
-#コンテナに入る時に使用 appはcompose.yamlのservicesの名前
-$ docker compose exec app bash
-
-#コンテナを終了
-$ docker compose down
-```
-- 別にGUIから動かしても同じ。
 
 # Build to Html
 - dist/* へ  
